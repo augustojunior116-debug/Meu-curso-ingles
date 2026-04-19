@@ -59,12 +59,12 @@
     .whatsapp-float:hover { transform: scale(1.05); background: #128C7E; }
     .hero-custom { text-align: center; padding: 40px 20px; }
     .alunos-bg { background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(255,255,255,0.92)), url('https://images.pexels.com/photos/5428836/pexels-photo-5428836.jpeg?auto=compress&cs=tinysrgb&w=1600'); background-size: cover; border-radius: 32px; padding: 40px; margin-top: 20px; }
-    .tabs-inner, .practice-subtabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 12px; }
-    .tab-inner-btn, .practice-subtab-btn { background: transparent; border: none; padding: 8px 20px; font-weight: 600; font-family: 'Inter', sans-serif; color: #64748B; cursor: pointer; border-radius: 40px; transition: 0.2s; }
-    .tab-inner-btn:hover, .practice-subtab-btn:hover { background: #F1F5F9; color: #1E3A5F; }
-    .tab-inner-btn.active, .practice-subtab-btn.active { background: #1E3A5F; color: white; }
-    .tab-inner-content, .practice-subtab-content { display: none; animation: fadeIn 0.3s ease; }
-    .tab-inner-content.active, .practice-subtab-content.active { display: block; }
+    .tabs-inner { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 20px; border-bottom: 1px solid #E2E8F0; padding-bottom: 12px; }
+    .tab-inner-btn { background: transparent; border: none; padding: 8px 20px; font-weight: 600; font-family: 'Inter', sans-serif; color: #64748B; cursor: pointer; border-radius: 40px; transition: 0.2s; }
+    .tab-inner-btn:hover { background: #F1F5F9; color: #1E3A5F; }
+    .tab-inner-btn.active { background: #1E3A5F; color: white; }
+    .tab-inner-content { display: none; animation: fadeIn 0.3s ease; }
+    .tab-inner-content.active { display: block; }
     .small-speak { background: none; border: none; color: #E67E22; cursor: pointer; font-size: 1rem; padding: 4px 8px; border-radius: 20px; }
     .small-speak:hover { background: #F1F5F9; color: #D35400; }
     @media (max-width: 768px) {
@@ -98,7 +98,7 @@
 </header>
 
 <main class="container">
-  <!-- HOME -->
+  <!-- ======================= HOME ======================= -->
   <div id="home" class="tab-content active">
     <div class="hero-custom">
       <h1>Speak English with Confidence</h1>
@@ -112,7 +112,7 @@
     </div>
   </div>
 
-  <!-- HOW IT WORKS -->
+  <!-- ======================= HOW IT WORKS ======================= -->
   <div id="howitworks" class="tab-content">
     <h2>How It Works</h2>
     <div class="grid-3">
@@ -137,7 +137,7 @@
     </div>
   </div>
 
-  <!-- LEVELS -->
+  <!-- ======================= LEVELS ======================= -->
   <div id="levels" class="tab-content">
     <h2>Levels & Content</h2>
     <div class="grid-3">
@@ -147,7 +147,7 @@
     </div>
   </div>
 
-  <!-- PRICING -->
+  <!-- ======================= PRICING ======================= -->
   <div id="pricing" class="tab-content">
     <h2>Pricing & Offers</h2>
     <div style="text-align: center; margin-bottom: 32px;">
@@ -167,7 +167,7 @@
     </div>
   </div>
 
-  <!-- TESTE DE NÍVEL -->
+  <!-- ======================= TESTE DE NÍVEL ======================= -->
   <div id="test" class="tab-content">
     <h2>Free Level Test</h2>
     <p>Answer 20 questions. You will receive the result by email.</p>
@@ -179,7 +179,7 @@
     </div>
   </div>
 
-  <!-- CONTACTO & FAQ -->
+  <!-- ======================= CONTACTO & FAQ ======================= -->
   <div id="contact" class="tab-content">
     <h2>Contact & FAQ</h2>
     <div style="margin-bottom: 32px;">
@@ -201,7 +201,7 @@
     </div>
   </div>
 
-  <!-- ABA ALUNOS (ÁREA RESTRITA) -->
+  <!-- ======================= ABA ALUNOS (ÁREA RESTRITA) ======================= -->
   <div id="alunos" class="tab-content">
     <div class="alunos-bg">
       <div id="alunosLoginArea" style="text-align:center; padding: 40px;">
@@ -219,6 +219,7 @@
           <button class="tab-inner-btn active" data-inner="semanaAtual">📅 Semana Atual</button>
           <button class="tab-inner-btn" data-inner="semanasAnteriores">📂 Semanas Anteriores</button>
           <button class="tab-inner-btn" data-inner="practiceHub">🎤 Practice Hub</button>
+          <button class="tab-inner-btn" data-inner="wordPuzzle">🧩 Word Puzzle</button>
           <button class="tab-inner-btn" data-inner="bonus">🎁 Bónus & Extras</button>
           <button class="tab-inner-btn" data-inner="conquistas">🏆 Conquistas</button>
         </div>
@@ -244,84 +245,74 @@
 
         <!-- PRACTICE HUB -->
         <div id="practiceHub" class="tab-inner-content">
-          <h3><i class="fas fa-microphone-alt"></i> Practice Hub – Pronúncia e Jogos</h3>
-          <p>Ferramentas exclusivas para melhorar a sua pronúncia e vocabulário.</p>
-          <div class="practice-subtabs">
-            <button class="practice-subtab-btn active" data-practice="ipa">🎤 Leitor & IPA</button>
-            <button class="practice-subtab-btn" data-practice="wordpuzzle">🧩 Word Puzzle</button>
-          </div>
-
-          <!-- LEITOR & IPA -->
-          <div id="practiceIpa" class="practice-subtab-content active">
-            <div class="quiz-form" style="margin-bottom: 32px; padding: 20px;">
-              <h4>🔊 Leitor de pronúncia</h4>
-              <input type="text" id="textToSpeak" placeholder="Ex: schedule, comfortable, I would like a cup of tea" style="width: 100%;">
-              <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
-                <select id="voiceSelect" class="btn btn-outline" style="background: white;"></select>
-                <button id="speakBtn" class="btn">Ouvir</button>
-              </div>
-            </div>
-            <div class="grid-3">
-              <div class="card"><h4>Vogais</h4><div style="overflow-x:auto;"><table style="font-size:0.85rem;"><thead><tr><th>IPA</th><th>Palavra</th><th>Ouvir</th><th>Dica</th></tr></thead>
-              <tbody>
-                <tr><td>/iː/</td><td><strong>see</strong></td><td><button class="small-speak" data-word="see">🔊</button></td><td>"sí"</td></tr>
-                <tr><td>/ɪ/</td><td><strong>sit</strong></td><td><button class="small-speak" data-word="sit">🔊</button></td><td>"sît" curto</td></tr>
-                <tr><td>/eɪ/</td><td><strong>day</strong></td><td><button class="small-speak" data-word="day">🔊</button></td><td>"dêi"</td></tr>
-                <tr><td>/ɛ/</td><td><strong>bed</strong></td><td><button class="small-speak" data-word="bed">🔊</button></td><td>"béd"</td></tr>
-                <tr><td>/æ/</td><td><strong>cat</strong></td><td><button class="small-speak" data-word="cat">🔊</button></td><td>"kát" aberto</td></tr>
-                <tr><td>/ɑ/</td><td><strong>hot</strong></td><td><button class="small-speak" data-word="hot">🔊</button></td><td>"rát"</td></tr>
-                <tr><td>/ɔ/</td><td><strong>saw</strong></td><td><button class="small-speak" data-word="saw">🔊</button></td><td>"só"</td></tr>
-                <tr><td>/oʊ/</td><td><strong>go</strong></td><td><button class="small-speak" data-word="go">🔊</button></td><td>"gôu"</td></tr>
-                <tr><td>/ʊ/</td><td><strong>put</strong></td><td><button class="small-speak" data-word="put">🔊</button></td><td>"pût"</td></tr>
-                <tr><td>/u/</td><td><strong>too</strong></td><td><button class="small-speak" data-word="too">🔊</button></td><td>"tú"</td></tr>
-                <tr><td>/ʌ/</td><td><strong>cup</strong></td><td><button class="small-speak" data-word="cup">🔊</button></td><td>"câp"</td></tr>
-                <tr><td>/ɜr/</td><td><strong>bird</strong></td><td><button class="small-speak" data-word="bird">🔊</button></td><td>"bêrd"</td></tr>
-                <tr><td>/ər/</td><td><strong>teacher</strong></td><td><button class="small-speak" data-word="teacher">🔊</button></td><td>termina "âr"</td></tr>
-              </tbody>
-            </table></div></div>
-              <div class="card"><h4>Consoantes</h4><div style="overflow-x:auto;"><table style="font-size:0.85rem;"><thead><tr><th>IPA</th><th>Palavra</th><th>Ouvir</th><th>Dica</th></tr></thead>
-              <tbody>
-                <tr><td>/p/</td><td><strong>pen</strong></td><td><button class="small-speak" data-word="pen">🔊</button></td><td>P português</td></tr>
-                <tr><td>/b/</td><td><strong>boy</strong></td><td><button class="small-speak" data-word="boy">🔊</button></td><td>B português</td></tr>
-                <tr><td>/t/</td><td><strong>tea</strong></td><td><button class="small-speak" data-word="tea">🔊</button></td><td>T aspirado</td></tr>
-                <tr><td>/d/</td><td><strong>dog</strong></td><td><button class="small-speak" data-word="dog">🔊</button></td><td>D suave</td></tr>
-                <tr><td>/k/</td><td><strong>cat</strong></td><td><button class="small-speak" data-word="cat">🔊</button></td><td>K aspirado</td></tr>
-                <tr><td>/g/</td><td><strong>go</strong></td><td><button class="small-speak" data-word="go">🔊</button></td><td>G suave</td></tr>
-                <tr><td>/f/</td><td><strong>fish</strong></td><td><button class="small-speak" data-word="fish">🔊</button></td><td>F normal</td></tr>
-                <tr><td>/v/</td><td><strong>voice</strong></td><td><button class="small-speak" data-word="voice">🔊</button></td><td>V vibrado</td></tr>
-                <tr><td>/θ/</td><td><strong>think</strong></td><td><button class="small-speak" data-word="think">🔊</button></td><td>"s" interdental</td></tr>
-                <tr><td>/ð/</td><td><strong>this</strong></td><td><button class="small-speak" data-word="this">🔊</button></td><td>"z" interdental</td></tr>
-                <tr><td>/s/</td><td><strong>see</strong></td><td><button class="small-speak" data-word="see">🔊</button></td><td>S seco</td></tr>
-                <tr><td>/z/</td><td><strong>zoo</strong></td><td><button class="small-speak" data-word="zoo">🔊</button></td><td>Z vibrado</td></tr>
-                <tr><td>/ʃ/</td><td><strong>she</strong></td><td><button class="small-speak" data-word="she">🔊</button></td><td>"ch" de chuva</td></tr>
-                <tr><td>/ʒ/</td><td><strong>vision</strong></td><td><button class="small-speak" data-word="vision">🔊</button></td><td>"j" de já</td></tr>
-                <tr><td>/h/</td><td><strong>he</strong></td><td><button class="small-speak" data-word="he">🔊</button></td><td>H aspirado</td></tr>
-                <tr><td>/m/</td><td><strong>me</strong></td><td><button class="small-speak" data-word="me">🔊</button></td><td>M normal</td></tr>
-                <tr><td>/n/</td><td><strong>no</strong></td><td><button class="small-speak" data-word="no">🔊</button></td><td>N normal</td></tr>
-                <tr><td>/ŋ/</td><td><strong>sing</strong></td><td><button class="small-speak" data-word="sing">🔊</button></td><td>"ng"</td></tr>
-                <tr><td>/l/</td><td><strong>light</strong></td><td><button class="small-speak" data-word="light">🔊</button></td><td>L claro</td></tr>
-                <tr><td>/r/</td><td><strong>red</strong></td><td><button class="small-speak" data-word="red">🔊</button></td><td>R enrolado</td></tr>
-                <tr><td>/w/</td><td><strong>we</strong></td><td><button class="small-speak" data-word="we">🔊</button></td><td>U semivogal</td></tr>
-                <tr><td>/j/</td><td><strong>yes</strong></td><td><button class="small-speak" data-word="yes">🔊</button></td><td>I semivogal</td></tr>
-              </tbody>
-            </table></div></div>
-              <div class="card"><h4>🎧 Listening Challenge</h4><p>Ouça a palavra e escreva‑a:</p><button id="randomWordBtn" class="btn btn-outline">Palavra aleatória</button><input type="text" id="guessInput" placeholder="Escreva a palavra..." style="margin-top:12px;"><button id="checkGuessBtn" class="btn" style="margin-top:8px;">Verificar</button><div id="guessResult" style="margin-top:12px;"></div></div>
+          <h3><i class="fas fa-microphone-alt"></i> Practice Hub – Pronúncia e IPA</h3>
+          <p>Ferramentas para melhorar a sua pronúncia.</p>
+          <div class="quiz-form" style="margin-bottom: 32px; padding: 20px;">
+            <h4>🔊 Leitor de pronúncia</h4>
+            <input type="text" id="textToSpeak" placeholder="Ex: schedule, comfortable, I would like a cup of tea" style="width: 100%;">
+            <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
+              <select id="voiceSelect" class="btn btn-outline" style="background: white;"></select>
+              <button id="speakBtn" class="btn">Ouvir</button>
             </div>
           </div>
+          <div class="grid-3">
+            <div class="card"><h4>Vogais</h4><div style="overflow-x:auto;"><table style="font-size:0.85rem;"><thead><tr><th>IPA</th><th>Palavra</th><th>Ouvir</th><th>Dica</th></tr></thead>
+            <tbody>
+              <tr><td>/iː/</td><td><strong>see</strong></td><td><button class="small-speak" data-word="see">🔊</button></td><td>"sí"</td></tr>
+              <tr><td>/ɪ/</td><td><strong>sit</strong></td><td><button class="small-speak" data-word="sit">🔊</button></td><td>"sît" curto</td></tr>
+              <tr><td>/eɪ/</td><td><strong>day</strong></td><td><button class="small-speak" data-word="day">🔊</button></td><td>"dêi"</td></tr>
+              <tr><td>/ɛ/</td><td><strong>bed</strong></td><td><button class="small-speak" data-word="bed">🔊</button></td><td>"béd"</td></tr>
+              <tr><td>/æ/</td><td><strong>cat</strong></td><td><button class="small-speak" data-word="cat">🔊</button></td><td>"kát" aberto</td></tr>
+              <tr><td>/ɑ/</td><td><strong>hot</strong></td><td><button class="small-speak" data-word="hot">🔊</button></td><td>"rát"</td></tr>
+              <tr><td>/ɔ/</td><td><strong>saw</strong></td><td><button class="small-speak" data-word="saw">🔊</button></td><td>"só"</td></tr>
+              <tr><td>/oʊ/</td><td><strong>go</strong></td><td><button class="small-speak" data-word="go">🔊</button></td><td>"gôu"</td></tr>
+              <tr><td>/ʊ/</td><td><strong>put</strong></td><td><button class="small-speak" data-word="put">🔊</button></td><td>"pût"</td></tr>
+              <tr><td>/u/</td><td><strong>too</strong></td><td><button class="small-speak" data-word="too">🔊</button></td><td>"tú"</td></tr>
+              <tr><td>/ʌ/</td><td><strong>cup</strong></td><td><button class="small-speak" data-word="cup">🔊</button></td><td>"câp"</td></tr>
+              <tr><td>/ɜr/</td><td><strong>bird</strong></td><td><button class="small-speak" data-word="bird">🔊</button></td><td>"bêrd"</td></tr>
+              <tr><td>/ər/</td><td><strong>teacher</strong></td><td><button class="small-speak" data-word="teacher">🔊</button></td><td>termina "âr"</td></tr>
+            </tbody></table></div></div>
+            <div class="card"><h4>Consoantes</h4><div style="overflow-x:auto;"><table style="font-size:0.85rem;"><thead><tr><th>IPA</th><th>Palavra</th><th>Ouvir</th><th>Dica</th></tr></thead>
+            <tbody>
+              <tr><td>/p/</td><td><strong>pen</strong></td><td><button class="small-speak" data-word="pen">🔊</button></td><td>P português</td></tr>
+              <tr><td>/b/</td><td><strong>boy</strong></td><td><button class="small-speak" data-word="boy">🔊</button></td><td>B português</td></tr>
+              <tr><td>/t/</td><td><strong>tea</strong></td><td><button class="small-speak" data-word="tea">🔊</button></td><td>T aspirado</td></tr>
+              <tr><td>/d/</td><td><strong>dog</strong></td><td><button class="small-speak" data-word="dog">🔊</button></td><td>D suave</td></tr>
+              <tr><td>/k/</td><td><strong>cat</strong></td><td><button class="small-speak" data-word="cat">🔊</button></td><td>K aspirado</td></tr>
+              <tr><td>/g/</td><td><strong>go</strong></td><td><button class="small-speak" data-word="go">🔊</button></td><td>G suave</td></tr>
+              <tr><td>/f/</td><td><strong>fish</strong></td><td><button class="small-speak" data-word="fish">🔊</button></td><td>F normal</td></tr>
+              <tr><td>/v/</td><td><strong>voice</strong></td><td><button class="small-speak" data-word="voice">🔊</button></td><td>V vibrado</td></tr>
+              <tr><td>/θ/</td><td><strong>think</strong></td><td><button class="small-speak" data-word="think">🔊</button></td><td>"s" interdental</td></tr>
+              <tr><td>/ð/</td><td><strong>this</strong></td><td><button class="small-speak" data-word="this">🔊</button></td><td>"z" interdental</td></tr>
+              <tr><td>/s/</td><td><strong>see</strong></td><td><button class="small-speak" data-word="see">🔊</button></td><td>S seco</td></tr>
+              <tr><td>/z/</td><td><strong>zoo</strong></td><td><button class="small-speak" data-word="zoo">🔊</button></td><td>Z vibrado</td></tr>
+              <tr><td>/ʃ/</td><td><strong>she</strong></td><td><button class="small-speak" data-word="she">🔊</button></td><td>"ch" de chuva</td></tr>
+              <tr><td>/ʒ/</td><td><strong>vision</strong></td><td><button class="small-speak" data-word="vision">🔊</button></td><td>"j" de já</td></tr>
+              <tr><td>/h/</td><td><strong>he</strong></td><td><button class="small-speak" data-word="he">🔊</button></td><td>H aspirado</td></tr>
+              <tr><td>/m/</td><td><strong>me</strong></td><td><button class="small-speak" data-word="me">🔊</button></td><td>M normal</td></tr>
+              <tr><td>/n/</td><td><strong>no</strong></td><td><button class="small-speak" data-word="no">🔊</button></td><td>N normal</td></tr>
+              <tr><td>/ŋ/</td><td><strong>sing</strong></td><td><button class="small-speak" data-word="sing">🔊</button></td><td>"ng"</td></tr>
+              <tr><td>/l/</td><td><strong>light</strong></td><td><button class="small-speak" data-word="light">🔊</button></td><td>L claro</td></tr>
+              <tr><td>/r/</td><td><strong>red</strong></td><td><button class="small-speak" data-word="red">🔊</button></td><td>R enrolado</td></tr>
+              <tr><td>/w/</td><td><strong>we</strong></td><td><button class="small-speak" data-word="we">🔊</button></td><td>U semivogal</td></tr>
+              <tr><td>/j/</td><td><strong>yes</strong></td><td><button class="small-speak" data-word="yes">🔊</button></td><td>I semivogal</td></tr>
+            </tbody></table></div></div>
+            <div class="card"><h4>🎧 Listening Challenge</h4><p>Ouça a palavra e escreva‑a:</p><button id="randomWordBtn" class="btn btn-outline">Palavra aleatória</button><input type="text" id="guessInput" placeholder="Escreva a palavra..." style="margin-top:12px;"><button id="checkGuessBtn" class="btn" style="margin-top:8px;">Verificar</button><div id="guessResult" style="margin-top:12px;"></div></div>
+          </div>
+        </div>
 
-          <!-- WORD PUZZLE (150 palavras) - VERSÃO SIMPLIFICADA E GARANTIDA -->
-          <div id="practiceWordPuzzle" class="practice-subtab-content">
-            <div class="card">
-              <h4>🧩 Word Puzzle Game</h4>
-              <p>Leia a dica em inglês e adivinhe a palavra. Clique na opção correta.</p>
-              <div id="puzzleArea">
-                <p id="puzzleHint" style="font-weight: bold; margin: 20px 0; font-size: 1.2rem; color: #1E3A5F;"></p>
-                <div id="puzzleWordDisplay" style="font-size: 2rem; letter-spacing: 10px; font-family: monospace; margin: 20px 0; text-align: center;"></div>
-                <div id="puzzleOptions" style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin: 20px 0;"></div>
-                <button id="nextPuzzleBtn" class="btn btn-outline" style="display: none;">🎲 Próximo desafio</button>
-                <p id="puzzleScore" style="margin-top: 20px; font-weight: bold;">🏆 Pontuação: 0</p>
-                <div id="puzzleFeedback" style="margin-top: 16px;"></div>
-              </div>
+        <!-- WORD PUZZLE (150+ palavras) -->
+        <div id="wordPuzzle" class="tab-inner-content">
+          <div class="card">
+            <h4>🧩 Word Puzzle Game</h4>
+            <p>Leia a dica em inglês e adivinhe a palavra. Clique na opção correta.</p>
+            <div id="puzzleArea">
+              <p id="puzzleHint" style="font-weight: bold; margin: 20px 0; font-size: 1.2rem; color: #1E3A5F;"></p>
+              <div id="puzzleWordDisplay" style="font-size: 2rem; letter-spacing: 10px; font-family: monospace; margin: 20px 0; text-align: center;"></div>
+              <div id="puzzleOptions" style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin: 20px 0;"></div>
+              <button id="nextPuzzleBtn" class="btn btn-outline" style="display: none;">🎲 Próximo desafio</button>
+              <p id="puzzleScore" style="margin-top: 20px; font-weight: bold;">🏆 Pontuação: 0</p>
+              <div id="puzzleFeedback" style="margin-top: 16px;"></div>
             </div>
           </div>
         </div>
@@ -355,7 +346,7 @@
 <a href="https://wa.me/258848776954?text=I%20WANT%20TO%20SPEAK%20ENGLISH" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <script>
-  // ========== 1. TABS PRINCIPAIS COM ANIMAÇÃO ==========
+  // ========== 1. TABS PRINCIPAIS ==========
   const tabs = document.querySelectorAll('.tab-btn');
   const contents = document.querySelectorAll('.tab-content');
   function activateTab(tabId) {
@@ -389,17 +380,13 @@
   const mobileBtn = document.getElementById('mobileMenuBtn');
   const tabsContainer = document.getElementById('tabsContainer');
   if (mobileBtn) {
-    mobileBtn.addEventListener('click', () => {
-      tabsContainer.classList.toggle('show');
-    });
+    mobileBtn.addEventListener('click', () => { tabsContainer.classList.toggle('show'); });
     document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (window.innerWidth <= 768) tabsContainer.classList.remove('show');
-      });
+      btn.addEventListener('click', () => { if (window.innerWidth <= 768) tabsContainer.classList.remove('show'); });
     });
   }
 
-  // ========== 2. TESTE DE NÍVEL ==========
+  // ========== 2. TESTE DE NÍVEL (20 perguntas) ==========
   const questions = [
     { type: "mcq", text: "1. She _______ to work every day.", options: ["go", "goes", "going"], correct: "goes" },
     { type: "mcq", text: "2. I _______ breakfast at 7:00 this morning.", options: ["have", "had", "having"], correct: "had" },
@@ -465,7 +452,7 @@
   const welcomeMsgAlunos = document.getElementById('welcomeLevelMsg');
 
   function showLoginForm() { if (loginAreaDiv) loginAreaDiv.style.display = 'block'; if (materiaisDiv) materiaisDiv.style.display = 'none'; if (errorMsgAlunos) errorMsgAlunos.innerText = ''; }
-  function showMaterials(level) { if (loginAreaDiv) loginAreaDiv.style.display = 'none'; if (materiaisDiv) materiaisDiv.style.display = 'block'; if (welcomeMsgAlunos) welcomeMsgAlunos.innerText = `Bem‑vindo! Nível: ${level}`; initInnerTabs(); initPracticeSubtabs(); initWordPuzzle(); initSpeech(); }
+  function showMaterials(level) { if (loginAreaDiv) loginAreaDiv.style.display = 'none'; if (materiaisDiv) materiaisDiv.style.display = 'block'; if (welcomeMsgAlunos) welcomeMsgAlunos.innerText = `Bem‑vindo! Nível: ${level}`; initInnerTabs(); initSpeech(); initWordPuzzle(); }
   function clearSession() { sessionStorage.removeItem('alunosLogged'); sessionStorage.removeItem('alunosLevel'); }
   function saveSession(level) { sessionStorage.setItem('alunosLogged', 'true'); sessionStorage.setItem('alunosLevel', level); }
   function isLoggedIn() { return sessionStorage.getItem('alunosLogged') === 'true'; }
@@ -481,13 +468,6 @@
     if (innerBtns.length === 0) return;
     innerBtns.forEach(btn => { btn.removeEventListener('click', innerClickHandler); btn.addEventListener('click', innerClickHandler); });
     function innerClickHandler(e) { const target = e.currentTarget.getAttribute('data-inner'); innerContents.forEach(content => content.classList.remove('active')); innerBtns.forEach(b => b.classList.remove('active')); document.getElementById(target).classList.add('active'); e.currentTarget.classList.add('active'); }
-  }
-  function initPracticeSubtabs() {
-    const practiceBtns = document.querySelectorAll('.practice-subtab-btn');
-    const practiceContents = document.querySelectorAll('.practice-subtab-content');
-    if (practiceBtns.length === 0) return;
-    practiceBtns.forEach(btn => { btn.removeEventListener('click', practiceClickHandler); btn.addEventListener('click', practiceClickHandler); });
-    function practiceClickHandler(e) { const target = e.currentTarget.getAttribute('data-practice'); practiceContents.forEach(content => content.classList.remove('active')); practiceBtns.forEach(b => b.classList.remove('active')); document.getElementById(`practice${target.charAt(0).toUpperCase() + target.slice(1)}`).classList.add('active'); e.currentTarget.classList.add('active'); }
   }
 
   // ========== 4. SPEECH & IPA ==========
@@ -521,8 +501,7 @@
     if (checkGuessBtn && !checkGuessBtn.hasListener) { checkGuessBtn.hasListener = true; checkGuessBtn.addEventListener('click', () => { const guess = document.getElementById('guessInput').value.trim().toLowerCase(); if (!currentRandomWord) { document.getElementById('guessResult').innerHTML = `<p style="color:red;">Click "Random Word" first.</p>`; return; } if (guess === currentRandomWord.toLowerCase()) { document.getElementById('guessResult').innerHTML = `<p style="color:green;">✅ Correct! Great job.</p>`; currentRandomWord = ""; } else { document.getElementById('guessResult').innerHTML = `<p style="color:red;">❌ Wrong. The word was: <strong>${currentRandomWord}</strong>. Try another.</p>`; } }); }
   }
 
-  // ========== 5. WORD PUZZLE - VERSÃO SIMPLIFICADA E ROBUSTA ==========
-  // Lista de puzzles (apenas 10 para teste, mas pode adicionar as 150 depois)
+  // ========== 5. WORD PUZZLE (150+ palavras) ==========
   const wordPuzzles = [
     { hint: "The planet we live on.", word: "EARTH", options: ["EARTH", "MARS", "JUPITER"] },
     { hint: "What comes after Monday?", word: "TUESDAY", options: ["TUESDAY", "WEDNESDAY", "THURSDAY"] },
@@ -533,7 +512,148 @@
     { hint: "What is H2O?", word: "WATER", options: ["WATER", "FIRE", "AIR"] },
     { hint: "The first meal of the day.", word: "BREAKFAST", options: ["BREAKFAST", "LUNCH", "DINNER"] },
     { hint: "A place where you borrow books.", word: "LIBRARY", options: ["LIBRARY", "SCHOOL", "HOSPITAL"] },
-    { hint: "The fastest land animal.", word: "CHEETAH", options: ["CHEETAH", "LION", "TIGER"] }
+    { hint: "The fastest land animal.", word: "CHEETAH", options: ["CHEETAH", "LION", "TIGER"] },
+    { hint: "What you use to see.", word: "EYES", options: ["EYES", "EARS", "HANDS"] },
+    { hint: "The opposite of 'big'.", word: "SMALL", options: ["SMALL", "LARGE", "HUGE"] },
+    { hint: "A fruit that is yellow and long.", word: "BANANA", options: ["BANANA", "APPLE", "ORANGE"] },
+    { hint: "What do you drink when you are thirsty?", word: "WATER", options: ["WATER", "JUICE", "SODA"] },
+    { hint: "The day before Friday.", word: "THURSDAY", options: ["THURSDAY", "WEDNESDAY", "SATURDAY"] },
+    { hint: "A vehicle that flies.", word: "AIRPLANE", options: ["AIRPLANE", "CAR", "TRAIN"] },
+    { hint: "The opposite of 'happy'.", word: "SAD", options: ["SAD", "ANGRY", "TIRED"] },
+    { hint: "What do you wear on your feet?", word: "SHOES", options: ["SHOES", "SOCKS", "PANTS"] },
+    { hint: "The month after January.", word: "FEBRUARY", options: ["FEBRUARY", "MARCH", "APRIL"] },
+    { hint: "A large body of salt water.", word: "OCEAN", options: ["OCEAN", "RIVER", "LAKE"] },
+    { hint: "What do you use to listen to music?", word: "EARS", options: ["EARS", "EYES", "MOUTH"] },
+    { hint: "The opposite of 'fast'.", word: "SLOW", options: ["SLOW", "QUICK", "RAPID"] },
+    { hint: "A person who teaches students.", word: "TEACHER", options: ["TEACHER", "DOCTOR", "ENGINEER"] },
+    { hint: "The planet known as the Red Planet.", word: "MARS", options: ["MARS", "VENUS", "MERCURY"] },
+    { hint: "What do you use to eat soup?", word: "SPOON", options: ["SPOON", "FORK", "KNIFE"] },
+    { hint: "The opposite of 'day'.", word: "NIGHT", options: ["NIGHT", "EVENING", "MORNING"] },
+    { hint: "An animal that lives in Australia and jumps.", word: "KANGAROO", options: ["KANGAROO", "KOALA", "WOMBAT"] },
+    { hint: "What do you put on a letter before sending?", word: "STAMP", options: ["STAMP", "ENVELOPE", "PAPER"] },
+    { hint: "The coldest season of the year.", word: "WINTER", options: ["WINTER", "SUMMER", "SPRING"] },
+    { hint: "A place where you watch movies.", word: "CINEMA", options: ["CINEMA", "THEATER", "MUSEUM"] },
+    { hint: "What do you use to cut paper?", word: "SCISSORS", options: ["SCISSORS", "KNIFE", "RULER"] },
+    { hint: "The opposite of 'old'.", word: "NEW", options: ["NEW", "YOUNG", "FRESH"] },
+    { hint: "A fruit that is red and round.", word: "APPLE", options: ["APPLE", "CHERRY", "TOMATO"] },
+    { hint: "What do you do when you are tired?", word: "SLEEP", options: ["SLEEP", "EAT", "WORK"] },
+    { hint: "The hottest season of the year.", word: "SUMMER", options: ["SUMMER", "WINTER", "AUTUMN"] },
+    { hint: "A shape with three sides.", word: "TRIANGLE", options: ["TRIANGLE", "SQUARE", "CIRCLE"] },
+    { hint: "What do you use to tell the time?", word: "CLOCK", options: ["CLOCK", "WATCH", "CALENDAR"] },
+    { hint: "The opposite of 'rich'.", word: "POOR", options: ["POOR", "NEEDY", "BROKE"] },
+    { hint: "An animal that gives us milk.", word: "COW", options: ["COW", "GOAT", "SHEEP"] },
+    { hint: "What do you use to clean your teeth?", word: "TOOTHBRUSH", options: ["TOOTHBRUSH", "TOOTHPASTE", "FLOSS"] },
+    { hint: "The largest mammal in the world.", word: "WHALE", options: ["WHALE", "ELEPHANT", "SHARK"] },
+    { hint: "The opposite of 'love'.", word: "HATE", options: ["HATE", "DISLIKE", "IGNORE"] },
+    { hint: "A place where you buy medicine.", word: "PHARMACY", options: ["PHARMACY", "HOSPITAL", "CLINIC"] },
+    { hint: "What do you use to take a photo?", word: "CAMERA", options: ["CAMERA", "PHONE", "COMPUTER"] },
+    { hint: "The opposite of 'expensive'.", word: "CHEAP", options: ["CHEAP", "AFFORDABLE", "LOW"] },
+    { hint: "A sport played with a round ball.", word: "SOCCER", options: ["SOCCER", "BASKETBALL", "TENNIS"] },
+    { hint: "What do you wear on your head?", word: "HAT", options: ["HAT", "CAP", "HELMET"] },
+    { hint: "The opposite of 'difficult'.", word: "EASY", options: ["EASY", "SIMPLE", "BASIC"] },
+    { hint: "An insect that makes honey.", word: "BEE", options: ["BEE", "WASP", "ANT"] },
+    { hint: "What do you use to open a door?", word: "KEY", options: ["KEY", "LOCK", "HANDLE"] },
+    { hint: "The opposite of 'start'.", word: "FINISH", options: ["FINISH", "END", "STOP"] },
+    { hint: "A musical instrument with black and white keys.", word: "PIANO", options: ["PIANO", "GUITAR", "VIOLIN"] },
+    { hint: "What do you use to write on a blackboard?", word: "CHALK", options: ["CHALK", "MARKER", "PEN"] },
+    { hint: "The opposite of 'light' (weight).", word: "HEAVY", options: ["HEAVY", "DARK", "BIG"] },
+    { hint: "A bird that cannot fly.", word: "PENGUIN", options: ["PENGUIN", "OSTRICH", "KIWI"] },
+    { hint: "What do you use to measure temperature?", word: "THERMOMETER", options: ["THERMOMETER", "BAROMETER", "HYGROMETER"] },
+    { hint: "The opposite of 'sharp'.", word: "BLUNT", options: ["BLUNT", "DULL", "ROUND"] },
+    { hint: "A vehicle with two wheels.", word: "BICYCLE", options: ["BICYCLE", "MOTORCYCLE", "SCOOTER"] },
+    { hint: "What do you use to dry your hands?", word: "TOWEL", options: ["TOWEL", "NAPKIN", "CLOTH"] },
+    { hint: "The opposite of 'victory'.", word: "DEFEAT", options: ["DEFEAT", "LOSS", "FAILURE"] },
+    { hint: "A precious stone that is often red.", word: "RUBY", options: ["RUBY", "DIAMOND", "EMERALD"] },
+    { hint: "What do you use to see the stars?", word: "TELESCOPE", options: ["TELESCOPE", "MICROSCOPE", "BINOCULARS"] },
+    { hint: "The opposite of 'dangerous'.", word: "SAFE", options: ["SAFE", "SECURE", "HARMLESS"] },
+    { hint: "A type of fruit that is green and sour.", word: "LIME", options: ["LIME", "LEMON", "GRAPE"] },
+    { hint: "What do you use to fix a leak?", word: "PLUMBER", options: ["PLUMBER", "ELECTRICIAN", "CARPENTER"] },
+    { hint: "The opposite of 'smooth'.", word: "ROUGH", options: ["ROUGH", "COARSE", "BUMPY"] },
+    { hint: "A type of dance from Argentina.", word: "TANGO", options: ["TANGO", "SALSA", "BALLET"] },
+    { hint: "What do you use to measure time?", word: "STOPWATCH", options: ["STOPWATCH", "TIMER", "CLOCK"] },
+    { hint: "The opposite of 'brave'.", word: "COWARD", options: ["COWARD", "AFRAID", "TIMID"] },
+    { hint: "A type of pasta that is long and thin.", word: "SPAGHETTI", options: ["SPAGHETTI", "FETTUCCINE", "LASAGNA"] },
+    { hint: "What do you use to clean the floor?", word: "MOP", options: ["MOP", "BROOM", "VACUUM"] },
+    { hint: "The opposite of 'agree'.", word: "DISAGREE", options: ["DISAGREE", "ARGUE", "CONFLICT"] },
+    { hint: "A type of bird known for its colorful feathers.", word: "PEACOCK", options: ["PEACOCK", "PARROT", "FLAMINGO"] },
+    { hint: "What do you use to open a bottle?", word: "OPENER", options: ["OPENER", "CORKSCREW", "CAP"] },
+    { hint: "The opposite of 'permanent'.", word: "TEMPORARY", options: ["TEMPORARY", "SHORT", "BRIEF"] },
+    { hint: "A type of flower that is often red.", word: "ROSE", options: ["ROSE", "TULIP", "LILY"] },
+    { hint: "What do you use to carry groceries?", word: "BAG", options: ["BAG", "BASKET", "BOX"] },
+    { hint: "The opposite of 'create'.", word: "DESTROY", options: ["DESTROY", "RUIN", "DEMOLISH"] },
+    { hint: "A type of fruit that is yellow and curved.", word: "BANANA", options: ["BANANA", "MANGO", "PAPAYA"] },
+    { hint: "What do you use to shave?", word: "RAZOR", options: ["RAZOR", "TRIMMER", "SCISSORS"] },
+    { hint: "The opposite of 'innocent'.", word: "GUILTY", options: ["GUILTY", "CULPABLE", "LIABLE"] },
+    { hint: "A type of dessert made from milk and sugar.", word: "ICE_CREAM", options: ["ICE_CREAM", "CUSTARD", "PUDDING"] },
+    { hint: "What do you use to lock a door?", word: "LOCK", options: ["LOCK", "LATCH", "BOLT"] },
+    { hint: "The opposite of 'full'.", word: "EMPTY", options: ["EMPTY", "HOLLOW", "VACANT"] },
+    { hint: "A type of sport played on ice.", word: "HOCKEY", options: ["HOCKEY", "SKATING", "CURLING"] },
+    { hint: "What do you use to measure length?", word: "RULER", options: ["RULER", "TAPE", "METER"] },
+    { hint: "The opposite of 'success'.", word: "FAILURE", options: ["FAILURE", "DEFEAT", "LOSS"] },
+    { hint: "A type of tree that produces acorns.", word: "OAK", options: ["OAK", "MAPLE", "PINE"] },
+    { hint: "What do you use to water plants?", word: "HOSE", options: ["HOSE", "CAN", "SPRINKLER"] },
+    { hint: "The opposite of 'major'.", word: "MINOR", options: ["MINOR", "SMALL", "TRIVIAL"] },
+    { hint: "A type of bird that is often kept as a pet.", word: "PARROT", options: ["PARROT", "CANARY", "FINCH"] },
+    { hint: "What do you use to cut hair?", word: "SCISSORS", options: ["SCISSORS", "CLIPPERS", "RAZOR"] },
+    { hint: "The opposite of 'tight'.", word: "LOOSE", options: ["LOOSE", "SLACK", "FREE"] },
+    { hint: "A type of fish known for its sharp teeth.", word: "SHARK", options: ["SHARK", "PIKE", "BARRACUDA"] },
+    { hint: "What do you use to light a candle?", word: "MATCH", options: ["MATCH", "LIGHTER", "FLINT"] },
+    { hint: "The opposite of 'wet'.", word: "DRY", options: ["DRY", "ARID", "PARCHED"] },
+    { hint: "A type of reptile that can change color.", word: "CHAMELEON", options: ["CHAMELEON", "LIZARD", "GECKO"] },
+    { hint: "What do you use to cook food?", word: "STOVE", options: ["STOVE", "OVEN", "MICROWAVE"] },
+    { hint: "The opposite of 'lazy'.", word: "ACTIVE", options: ["ACTIVE", "ENERGETIC", "BUSY"] },
+    { hint: "A type of flower that grows in the desert.", word: "CACTUS", options: ["CACTUS", "SUCCULENT", "AGAVE"] },
+    // 50 palavras avançadas adicionais
+    { hint: "A philosophical concept that questions the nature of reality, often explored by Plato.", word: "IDEALISM", options: ["IDEALISM", "REALISM", "SKEPTICISM"] },
+    { hint: "The study of the origin and evolution of the universe.", word: "COSMOLOGY", options: ["COSMOLOGY", "ASTRONOMY", "ASTROLOGY"] },
+    { hint: "A political system where power resides in a few elite individuals.", word: "OLIGARCHY", options: ["OLIGARCHY", "DEMOCRACY", "MONARCHY"] },
+    { hint: "The psychological term for the phenomenon where individuals exert less effort in a group.", word: "SOCIAL_LOAFING", options: ["SOCIAL_LOAFING", "GROUPTHINK", "BANDWAGON"] },
+    { hint: "A type of logical fallacy that attacks the person rather than the argument.", word: "AD_HOMINEM", options: ["AD_HOMINEM", "STRAW_MAN", "CIRCULAR"] },
+    { hint: "The economic theory that advocates for minimal government intervention.", word: "LAISSEZ_FAIRE", options: ["LAISSEZ_FAIRE", "KEYNESIAN", "MARXIST"] },
+    { hint: "A literary genre that combines horror and romance, popular in the 18th century.", word: "GOTHIC", options: ["GOTHIC", "ROMANTIC", "SURREAL"] },
+    { hint: "The process by which a cell engulfs large particles or cells.", word: "PHAGOCYTOSIS", options: ["PHAGOCYTOSIS", "PINOCYTOSIS", "EXOCYTOSIS"] },
+    { hint: "A musical term meaning 'gradually slowing down'.", word: "RITARDANDO", options: ["RITARDANDO", "ACCELERANDO", "CRESCENDO"] },
+    { hint: "The legal principle that a person cannot be tried twice for the same crime.", word: "DOUBLE_JEOPARDY", options: ["DOUBLE_JEOPARDY", "HABEAS_CORPUS", "MIRANDA"] },
+    { hint: "A type of volcanic rock that is smooth and glassy.", word: "OBSIDIAN", options: ["OBSIDIAN", "BASALT", "GRANITE"] },
+    { hint: "The branch of mathematics dealing with the properties of circles and spheres.", word: "GEOMETRY", options: ["GEOMETRY", "ALGEBRA", "TRIGONOMETRY"] },
+    { hint: "A style of painting that uses small dots of color to create an image.", word: "POINTILLISM", options: ["POINTILLISM", "IMPRESSIONISM", "CUBISM"] },
+    { hint: "The study of the interactions between organisms and their environment.", word: "ECOLOGY", options: ["ECOLOGY", "BIOLOGY", "ZOOLOGY"] },
+    { hint: "A type of cloud that forms in thin, white patches, often indicating fair weather.", word: "CUMULUS", options: ["CUMULUS", "CIRRUS", "STRATUS"] },
+    { hint: "The process of converting a liquid into a gas.", word: "EVAPORATION", options: ["EVAPORATION", "CONDENSATION", "SUBLIMATION"] },
+    { hint: "A type of government where a religious leader or group holds power.", word: "THEOCRACY", options: ["THEOCRACY", "SECULAR", "PLUTOCRACY"] },
+    { hint: "The feeling of intense longing for something or someone, often nostalgic.", word: "YEARNING", options: ["YEARNING", "LONGING", "HOMESICKNESS"] },
+    { hint: "A type of musical composition for a solo instrument and orchestra.", word: "CONCERTO", options: ["CONCERTO", "SONATA", "SYMPHONY"] },
+    { hint: "The scientific study of the Earth's physical structure and substance.", word: "GEOLOGY", options: ["GEOLOGY", "GEOGRAPHY", "METEOROLOGY"] },
+    { hint: "A type of logical reasoning that moves from specific observations to general conclusions.", word: "INDUCTION", options: ["INDUCTION", "DEDUCTION", "ABDUCTION"] },
+    { hint: "The art of effective or persuasive speaking or writing.", word: "RHETORIC", options: ["RHETORIC", "LOGIC", "GRAMMAR"] },
+    { hint: "A type of cell division that produces four genetically different daughter cells.", word: "MEIOSIS", options: ["MEIOSIS", "MITOSIS", "BINARY_FISSION"] },
+    { hint: "The period of European history from the 14th to the 17th century, marking the transition from the Middle Ages to modernity.", word: "RENAISSANCE", options: ["RENAISSANCE", "REFORMATION", "ENLIGHTENMENT"] },
+    { hint: "A type of polymer that can be melted and reshaped repeatedly.", word: "THERMOPLASTIC", options: ["THERMOPLASTIC", "THERMOSET", "ELASTOMER"] },
+    { hint: "The study of the human mind and behavior.", word: "PSYCHOLOGY", options: ["PSYCHOLOGY", "SOCIOLOGY", "ANTHROPOLOGY"] },
+    { hint: "A type of government where citizens vote for representatives.", word: "REPUBLIC", options: ["REPUBLIC", "DEMOCRACY", "AUTOCRACY"] },
+    { hint: "The process by which plants convert light energy into chemical energy.", word: "PHOTOSYNTHESIS", options: ["PHOTOSYNTHESIS", "RESPIRATION", "FERMENTATION"] },
+    { hint: "A type of poem with 14 lines, typically in iambic pentameter.", word: "SONNET", options: ["SONNET", "HAIKU", "LIMERICK"] },
+    { hint: "The study of the composition, structure, and properties of matter.", word: "CHEMISTRY", options: ["CHEMISTRY", "PHYSICS", "BIOLOGY"] },
+    { hint: "A type of art movement that emphasizes the subconscious and dreams.", word: "SURREALISM", options: ["SURREALISM", "DADAISM", "EXPRESSIONISM"] },
+    { hint: "The process of a solid turning directly into a gas.", word: "SUBLIMATION", options: ["SUBLIMATION", "DEPOSITION", "EVAPORATION"] },
+    { hint: "A type of government where a single person rules with absolute power.", word: "AUTOCRACY", options: ["AUTOCRACY", "DICTATORSHIP", "TYRANNY"] },
+    { hint: "The study of the origin and history of words.", word: "ETYMOLOGY", options: ["ETYMOLOGY", "LEXICOGRAPHY", "PHONOLOGY"] },
+    { hint: "A type of dance that originated in the Dominican Republic.", word: "MERENGUE", options: ["MERENGUE", "SALSA", "BACHATA"] },
+    { hint: "The branch of medicine dealing with the urinary tract.", word: "UROLOGY", options: ["UROLOGY", "NEPHROLOGY", "ANDROLOGY"] },
+    { hint: "A type of architectural style characterized by pointed arches and ribbed vaults.", word: "GOTHIC", options: ["GOTHIC", "ROMANESQUE", "BAROQUE"] },
+    { hint: "The study of the relationships between people and their physical environment.", word: "HUMAN_GEOGRAPHY", options: ["HUMAN_GEOGRAPHY", "PHYSICAL_GEOGRAPHY", "CARTOGRAPHY"] },
+    { hint: "A type of logical fallacy where a conclusion is assumed in the premise.", word: "CIRCULAR", options: ["CIRCULAR", "TAUTOLOGY", "PARADOX"] },
+    { hint: "The process by which a cell engulfs liquid droplets.", word: "PINOCYTOSIS", options: ["PINOCYTOSIS", "PHAGOCYTOSIS", "ENDOCYTOSIS"] },
+    { hint: "A type of musical scale with five notes per octave.", word: "PENTATONIC", options: ["PENTATONIC", "DIATONIC", "CHROMATIC"] },
+    { hint: "The study of the Earth's atmosphere and weather patterns.", word: "METEOROLOGY", options: ["METEOROLOGY", "CLIMATOLOGY", "OCEANOGRAPHY"] },
+    { hint: "A type of government where the wealthy rule.", word: "PLUTOCRACY", options: ["PLUTOCRACY", "OLIGARCHY", "MERITOCRACY"] },
+    { hint: "The process by which a cell releases substances to the outside.", word: "EXOCYTOSIS", options: ["EXOCYTOSIS", "ENDOCYTOSIS", "PHAGOCYTOSIS"] },
+    { hint: "A type of poem that tells a story, often with a tragic ending.", word: "BALLAD", options: ["BALLAD", "EPIC", "LYRIC"] },
+    { hint: "The study of the physical properties of sound.", word: "ACOUSTICS", options: ["ACOUSTICS", "AUDIOLOGY", "MUSICOLOGY"] },
+    { hint: "A type of logical reasoning that moves from general principles to specific conclusions.", word: "DEDUCTION", options: ["DEDUCTION", "INDUCTION", "ABDUCTION"] },
+    { hint: "The process by which plants absorb water through their roots.", word: "OSMOSIS", options: ["OSMOSIS", "DIFFUSION", "TRANSPIRATION"] },
+    { hint: "A type of art movement that focuses on the subjective expression of emotions.", word: "EXPRESSIONISM", options: ["EXPRESSIONISM", "IMPRESSIONISM", "ABSTRACT"] },
+    { hint: "The study of the structure of the universe.", word: "COSMOLOGY", options: ["COSMOLOGY", "ASTRONOMY", "ASTROPHYSICS"] }
   ];
 
   let currentPuzzleIndex = 0;
@@ -545,15 +665,10 @@
     const displayEl = document.getElementById('puzzleWordDisplay');
     const optionsEl = document.getElementById('puzzleOptions');
     const nextBtn = document.getElementById('nextPuzzleBtn');
-    if (!hintEl || !displayEl || !optionsEl) {
-      console.error("Elementos do puzzle não encontrados");
-      return;
-    }
+    if (!hintEl || !displayEl || !optionsEl) return;
     if (currentPuzzleIndex >= wordPuzzles.length) {
       hintEl.innerHTML = "🎉 Congratulations! You completed all challenges! 🎉";
-      displayEl.innerHTML = "";
-      optionsEl.innerHTML = "";
-      if (nextBtn) nextBtn.style.display = "none";
+      displayEl.innerHTML = ""; optionsEl.innerHTML = ""; if (nextBtn) nextBtn.style.display = "none";
       return;
     }
     const puzzle = wordPuzzles[currentPuzzleIndex];
@@ -602,39 +717,33 @@
   }
 
   function initWordPuzzle() {
-    // Forçar a exibição do puzzle quando a sub-aba for clicada
-    const wordPuzzleBtn = document.querySelector('.practice-subtab-btn[data-practice="wordpuzzle"]');
-    if (wordPuzzleBtn) {
-      wordPuzzleBtn.addEventListener('click', function() {
-        // Pequeno atraso para garantir que a div está visível
-        setTimeout(() => {
-          currentPuzzleIndex = 0;
-          puzzleScore = 0;
-          puzzleAnswered = false;
-          document.getElementById('puzzleScore').innerHTML = '🏆 Score: 0';
-          displayPuzzle();
-        }, 100);
-      });
-    }
-    // Se a sub-aba já estiver ativa no momento do login, mostrar também
-    if (document.querySelector('.practice-subtab-btn.active')?.getAttribute('data-practice') === 'wordpuzzle') {
-      setTimeout(() => {
-        currentPuzzleIndex = 0;
-        puzzleScore = 0;
-        puzzleAnswered = false;
-        document.getElementById('puzzleScore').innerHTML = '🏆 Score: 0';
-        displayPuzzle();
-      }, 200);
-    }
-    // Configurar o botão "Próximo"
     const nextBtn = document.getElementById('nextPuzzleBtn');
     if (nextBtn && !nextBtn.hasListener) {
       nextBtn.hasListener = true;
       nextBtn.addEventListener('click', nextPuzzle);
     }
+    const wordPuzzleTab = document.getElementById('wordPuzzle');
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class' && wordPuzzleTab.classList.contains('active')) {
+          currentPuzzleIndex = 0;
+          puzzleScore = 0;
+          puzzleAnswered = false;
+          document.getElementById('puzzleScore').innerHTML = '🏆 Score: 0';
+          displayPuzzle();
+        }
+      });
+    });
+    if (wordPuzzleTab) observer.observe(wordPuzzleTab, { attributes: true });
+    if (wordPuzzleTab && wordPuzzleTab.classList.contains('active')) {
+      currentPuzzleIndex = 0;
+      puzzleScore = 0;
+      puzzleAnswered = false;
+      document.getElementById('puzzleScore').innerHTML = '🏆 Score: 0';
+      displayPuzzle();
+    }
   }
 
-  // Inicialização geral
   window.addEventListener('load', () => {
     if (document.getElementById('alunos').classList.contains('active')) checkAlunosSession();
   });
