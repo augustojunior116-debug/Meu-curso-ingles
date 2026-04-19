@@ -271,7 +271,7 @@
               <tr><td>/ʌ/</td><td><strong>cup</strong></td><td><button class="small-speak" data-word="cup">🔊</button></td><td>"câp"</td></tr>
               <tr><td>/ɜr/</td><td><strong>bird</strong></td><td><button class="small-speak" data-word="bird">🔊</button></td><td>"bêrd"</td></tr>
               <tr><td>/ər/</td><td><strong>teacher</strong></td><td><button class="small-speak" data-word="teacher">🔊</button></td><td>termina "âr"</td></tr>
-            </tbody></table></div></div>
+            </tbody></td></div></div>
             <div class="card"><h4>Consoantes</h4><div style="overflow-x:auto;"><table style="font-size:0.85rem;"><thead><tr><th>IPA</th><th>Palavra</th><th>Ouvir</th><th>Dica</th></tr></thead>
             <tbody>
               <tr><td>/p/</td><td><strong>pen</strong></td><td><button class="small-speak" data-word="pen">🔊</button></td><td>P português</td></tr>
@@ -301,7 +301,7 @@
           </div>
         </div>
 
-        <!-- WORD PUZZLE (150+ palavras) -->
+        <!-- WORD PUZZLE (150 palavras aleatórias) -->
         <div id="wordPuzzle" class="tab-inner-content">
           <div class="card">
             <h4>🧩 Word Puzzle Game</h4>
@@ -346,7 +346,7 @@
 <a href="https://wa.me/258848776954?text=I%20WANT%20TO%20SPEAK%20ENGLISH" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <script>
-  // ========== 1. TABS PRINCIPAIS ==========
+  // ========== 1. TABS PRINCIPAIS COM ANIMAÇÃO ==========
   const tabs = document.querySelectorAll('.tab-btn');
   const contents = document.querySelectorAll('.tab-content');
   function activateTab(tabId) {
@@ -470,7 +470,7 @@
     function innerClickHandler(e) { const target = e.currentTarget.getAttribute('data-inner'); innerContents.forEach(content => content.classList.remove('active')); innerBtns.forEach(b => b.classList.remove('active')); document.getElementById(target).classList.add('active'); e.currentTarget.classList.add('active'); }
   }
 
-  // ========== 4. SPEECH & IPA ==========
+  // ========== 4. SPEECH & IPA (com vozes inglesas, incluindo britânico) ==========
   let speechSynth = window.speechSynthesis;
   let voicesList = [];
   function loadVoices() {
@@ -478,31 +478,93 @@
     const voiceSelect = document.getElementById('voiceSelect');
     if (!voiceSelect) return;
     voiceSelect.innerHTML = '';
-    voicesList.forEach((voice, i) => { if (voice.lang.startsWith('en')) { const option = document.createElement('option'); option.value = i; let label = `${voice.name} (${voice.lang})`; if (voice.lang === 'en-US') label += ' ★ American English'; option.textContent = label; voiceSelect.appendChild(option); } });
-    if (voiceSelect.options.length === 0) { const option = document.createElement('option'); option.textContent = 'No English voices found'; voiceSelect.appendChild(option); }
+    voicesList.forEach((voice, i) => {
+      if (voice.lang.startsWith('en')) {
+        const option = document.createElement('option');
+        option.value = i;
+        let label = `${voice.name} (${voice.lang})`;
+        if (voice.lang === 'en-US') label += ' ★ American English';
+        if (voice.lang === 'en-GB') label += ' ★ British English';
+        option.textContent = label;
+        voiceSelect.appendChild(option);
+      }
+    });
+    if (voiceSelect.options.length === 0) {
+      const option = document.createElement('option');
+      option.textContent = 'No English voices found';
+      voiceSelect.appendChild(option);
+    }
   }
   function speakText(text, voiceIndex = null) {
     if (!speechSynth) { alert("Seu navegador não suporta síntese de voz. Use Chrome, Edge ou Safari."); return; }
     const utterance = new SpeechSynthesisUtterance(text);
     if (voiceIndex !== null && voicesList[voiceIndex]) utterance.voice = voicesList[voiceIndex];
-    else { const usVoice = voicesList.find(v => v.lang === 'en-US'); if (usVoice) utterance.voice = usVoice; }
-    utterance.lang = 'en-US'; utterance.rate = 0.9; speechSynth.cancel(); speechSynth.speak(utterance);
+    else {
+      const usVoice = voicesList.find(v => v.lang === 'en-US');
+      if (usVoice) utterance.voice = usVoice;
+    }
+    utterance.lang = 'en-US';
+    utterance.rate = 0.9;
+    speechSynth.cancel();
+    speechSynth.speak(utterance);
   }
   function initSpeech() {
     if (window.speechSynthesis) { speechSynth.onvoiceschanged = loadVoices; loadVoices(); }
     const speakBtn = document.getElementById('speakBtn');
-    if (speakBtn && !speakBtn.hasListener) { speakBtn.hasListener = true; speakBtn.addEventListener('click', () => { const text = document.getElementById('textToSpeak').value.trim(); if (!text) { alert("Digite uma palavra ou frase."); return; } const voiceSelect = document.getElementById('voiceSelect'); const voiceIndex = voiceSelect ? parseInt(voiceSelect.value) : null; speakText(text, voiceIndex); }); }
-    document.querySelectorAll('.small-speak').forEach(btn => { if (!btn.hasListener) { btn.hasListener = true; btn.addEventListener('click', (e) => { const word = btn.getAttribute('data-word'); if (word) speakText(word); }); } });
+    if (speakBtn && !speakBtn.hasListener) {
+      speakBtn.hasListener = true;
+      speakBtn.addEventListener('click', () => {
+        const text = document.getElementById('textToSpeak').value.trim();
+        if (!text) { alert("Digite uma palavra ou frase."); return; }
+        const voiceSelect = document.getElementById('voiceSelect');
+        const voiceIndex = voiceSelect ? parseInt(voiceSelect.value) : null;
+        speakText(text, voiceIndex);
+      });
+    }
+    document.querySelectorAll('.small-speak').forEach(btn => {
+      if (!btn.hasListener) {
+        btn.hasListener = true;
+        btn.addEventListener('click', (e) => {
+          const word = btn.getAttribute('data-word');
+          if (word) speakText(word);
+        });
+      }
+    });
     const wordList = ["schedule", "comfortable", "photography", "though", "thought", "through", "enough", "vegetable", "interesting", "world", "specific", "usually", "business", "clothes", "debris"];
     let currentRandomWord = "";
     const randomBtn = document.getElementById('randomWordBtn');
-    if (randomBtn && !randomBtn.hasListener) { randomBtn.hasListener = true; randomBtn.addEventListener('click', () => { const randomIndex = Math.floor(Math.random() * wordList.length); currentRandomWord = wordList[randomIndex]; speakText(currentRandomWord); document.getElementById('guessResult').innerHTML = `<p>🔊 Word spoken. Try to write it below.</p>`; document.getElementById('guessInput').value = ''; }); }
+    if (randomBtn && !randomBtn.hasListener) {
+      randomBtn.hasListener = true;
+      randomBtn.addEventListener('click', () => {
+        const randomIndex = Math.floor(Math.random() * wordList.length);
+        currentRandomWord = wordList[randomIndex];
+        speakText(currentRandomWord);
+        document.getElementById('guessResult').innerHTML = `<p>🔊 Word spoken. Try to write it below.</p>`;
+        document.getElementById('guessInput').value = '';
+      });
+    }
     const checkGuessBtn = document.getElementById('checkGuessBtn');
-    if (checkGuessBtn && !checkGuessBtn.hasListener) { checkGuessBtn.hasListener = true; checkGuessBtn.addEventListener('click', () => { const guess = document.getElementById('guessInput').value.trim().toLowerCase(); if (!currentRandomWord) { document.getElementById('guessResult').innerHTML = `<p style="color:red;">Click "Random Word" first.</p>`; return; } if (guess === currentRandomWord.toLowerCase()) { document.getElementById('guessResult').innerHTML = `<p style="color:green;">✅ Correct! Great job.</p>`; currentRandomWord = ""; } else { document.getElementById('guessResult').innerHTML = `<p style="color:red;">❌ Wrong. The word was: <strong>${currentRandomWord}</strong>. Try another.</p>`; } }); }
+    if (checkGuessBtn && !checkGuessBtn.hasListener) {
+      checkGuessBtn.hasListener = true;
+      checkGuessBtn.addEventListener('click', () => {
+        const guess = document.getElementById('guessInput').value.trim().toLowerCase();
+        if (!currentRandomWord) {
+          document.getElementById('guessResult').innerHTML = `<p style="color:red;">Click "Random Word" first.</p>`;
+          return;
+        }
+        if (guess === currentRandomWord.toLowerCase()) {
+          document.getElementById('guessResult').innerHTML = `<p style="color:green;">✅ Correct! Great job.</p>`;
+          currentRandomWord = "";
+        } else {
+          document.getElementById('guessResult').innerHTML = `<p style="color:red;">❌ Wrong. The word was: <strong>${currentRandomWord}</strong>. Try another.</p>`;
+        }
+      });
+    }
   }
 
-  // ========== 5. WORD PUZZLE (150+ palavras) ==========
-  const wordPuzzles = [
+  // ========== 5. WORD PUZZLE (150 palavras com ordem aleatória) ==========
+  const wordPuzzlesRaw = [
+    // 100 palavras básicas
     { hint: "The planet we live on.", word: "EARTH", options: ["EARTH", "MARS", "JUPITER"] },
     { hint: "What comes after Monday?", word: "TUESDAY", options: ["TUESDAY", "WEDNESDAY", "THURSDAY"] },
     { hint: "The opposite of 'hot'.", word: "COLD", options: ["COLD", "WARM", "COOL"] },
@@ -604,61 +666,78 @@
     { hint: "The opposite of 'lazy'.", word: "ACTIVE", options: ["ACTIVE", "ENERGETIC", "BUSY"] },
     { hint: "A type of flower that grows in the desert.", word: "CACTUS", options: ["CACTUS", "SUCCULENT", "AGAVE"] },
     // 50 palavras avançadas adicionais
-    { hint: "A philosophical concept that questions the nature of reality, often explored by Plato.", word: "IDEALISM", options: ["IDEALISM", "REALISM", "SKEPTICISM"] },
-    { hint: "The study of the origin and evolution of the universe.", word: "COSMOLOGY", options: ["COSMOLOGY", "ASTRONOMY", "ASTROLOGY"] },
-    { hint: "A political system where power resides in a few elite individuals.", word: "OLIGARCHY", options: ["OLIGARCHY", "DEMOCRACY", "MONARCHY"] },
-    { hint: "The psychological term for the phenomenon where individuals exert less effort in a group.", word: "SOCIAL_LOAFING", options: ["SOCIAL_LOAFING", "GROUPTHINK", "BANDWAGON"] },
-    { hint: "A type of logical fallacy that attacks the person rather than the argument.", word: "AD_HOMINEM", options: ["AD_HOMINEM", "STRAW_MAN", "CIRCULAR"] },
-    { hint: "The economic theory that advocates for minimal government intervention.", word: "LAISSEZ_FAIRE", options: ["LAISSEZ_FAIRE", "KEYNESIAN", "MARXIST"] },
-    { hint: "A literary genre that combines horror and romance, popular in the 18th century.", word: "GOTHIC", options: ["GOTHIC", "ROMANTIC", "SURREAL"] },
-    { hint: "The process by which a cell engulfs large particles or cells.", word: "PHAGOCYTOSIS", options: ["PHAGOCYTOSIS", "PINOCYTOSIS", "EXOCYTOSIS"] },
-    { hint: "A musical term meaning 'gradually slowing down'.", word: "RITARDANDO", options: ["RITARDANDO", "ACCELERANDO", "CRESCENDO"] },
-    { hint: "The legal principle that a person cannot be tried twice for the same crime.", word: "DOUBLE_JEOPARDY", options: ["DOUBLE_JEOPARDY", "HABEAS_CORPUS", "MIRANDA"] },
-    { hint: "A type of volcanic rock that is smooth and glassy.", word: "OBSIDIAN", options: ["OBSIDIAN", "BASALT", "GRANITE"] },
-    { hint: "The branch of mathematics dealing with the properties of circles and spheres.", word: "GEOMETRY", options: ["GEOMETRY", "ALGEBRA", "TRIGONOMETRY"] },
-    { hint: "A style of painting that uses small dots of color to create an image.", word: "POINTILLISM", options: ["POINTILLISM", "IMPRESSIONISM", "CUBISM"] },
-    { hint: "The study of the interactions between organisms and their environment.", word: "ECOLOGY", options: ["ECOLOGY", "BIOLOGY", "ZOOLOGY"] },
-    { hint: "A type of cloud that forms in thin, white patches, often indicating fair weather.", word: "CUMULUS", options: ["CUMULUS", "CIRRUS", "STRATUS"] },
-    { hint: "The process of converting a liquid into a gas.", word: "EVAPORATION", options: ["EVAPORATION", "CONDENSATION", "SUBLIMATION"] },
-    { hint: "A type of government where a religious leader or group holds power.", word: "THEOCRACY", options: ["THEOCRACY", "SECULAR", "PLUTOCRACY"] },
-    { hint: "The feeling of intense longing for something or someone, often nostalgic.", word: "YEARNING", options: ["YEARNING", "LONGING", "HOMESICKNESS"] },
-    { hint: "A type of musical composition for a solo instrument and orchestra.", word: "CONCERTO", options: ["CONCERTO", "SONATA", "SYMPHONY"] },
-    { hint: "The scientific study of the Earth's physical structure and substance.", word: "GEOLOGY", options: ["GEOLOGY", "GEOGRAPHY", "METEOROLOGY"] },
-    { hint: "A type of logical reasoning that moves from specific observations to general conclusions.", word: "INDUCTION", options: ["INDUCTION", "DEDUCTION", "ABDUCTION"] },
-    { hint: "The art of effective or persuasive speaking or writing.", word: "RHETORIC", options: ["RHETORIC", "LOGIC", "GRAMMAR"] },
-    { hint: "A type of cell division that produces four genetically different daughter cells.", word: "MEIOSIS", options: ["MEIOSIS", "MITOSIS", "BINARY_FISSION"] },
-    { hint: "The period of European history from the 14th to the 17th century, marking the transition from the Middle Ages to modernity.", word: "RENAISSANCE", options: ["RENAISSANCE", "REFORMATION", "ENLIGHTENMENT"] },
-    { hint: "A type of polymer that can be melted and reshaped repeatedly.", word: "THERMOPLASTIC", options: ["THERMOPLASTIC", "THERMOSET", "ELASTOMER"] },
-    { hint: "The study of the human mind and behavior.", word: "PSYCHOLOGY", options: ["PSYCHOLOGY", "SOCIOLOGY", "ANTHROPOLOGY"] },
-    { hint: "A type of government where citizens vote for representatives.", word: "REPUBLIC", options: ["REPUBLIC", "DEMOCRACY", "AUTOCRACY"] },
-    { hint: "The process by which plants convert light energy into chemical energy.", word: "PHOTOSYNTHESIS", options: ["PHOTOSYNTHESIS", "RESPIRATION", "FERMENTATION"] },
-    { hint: "A type of poem with 14 lines, typically in iambic pentameter.", word: "SONNET", options: ["SONNET", "HAIKU", "LIMERICK"] },
-    { hint: "The study of the composition, structure, and properties of matter.", word: "CHEMISTRY", options: ["CHEMISTRY", "PHYSICS", "BIOLOGY"] },
-    { hint: "A type of art movement that emphasizes the subconscious and dreams.", word: "SURREALISM", options: ["SURREALISM", "DADAISM", "EXPRESSIONISM"] },
-    { hint: "The process of a solid turning directly into a gas.", word: "SUBLIMATION", options: ["SUBLIMATION", "DEPOSITION", "EVAPORATION"] },
-    { hint: "A type of government where a single person rules with absolute power.", word: "AUTOCRACY", options: ["AUTOCRACY", "DICTATORSHIP", "TYRANNY"] },
-    { hint: "The study of the origin and history of words.", word: "ETYMOLOGY", options: ["ETYMOLOGY", "LEXICOGRAPHY", "PHONOLOGY"] },
-    { hint: "A type of dance that originated in the Dominican Republic.", word: "MERENGUE", options: ["MERENGUE", "SALSA", "BACHATA"] },
-    { hint: "The branch of medicine dealing with the urinary tract.", word: "UROLOGY", options: ["UROLOGY", "NEPHROLOGY", "ANDROLOGY"] },
-    { hint: "A type of architectural style characterized by pointed arches and ribbed vaults.", word: "GOTHIC", options: ["GOTHIC", "ROMANESQUE", "BAROQUE"] },
-    { hint: "The study of the relationships between people and their physical environment.", word: "HUMAN_GEOGRAPHY", options: ["HUMAN_GEOGRAPHY", "PHYSICAL_GEOGRAPHY", "CARTOGRAPHY"] },
-    { hint: "A type of logical fallacy where a conclusion is assumed in the premise.", word: "CIRCULAR", options: ["CIRCULAR", "TAUTOLOGY", "PARADOX"] },
-    { hint: "The process by which a cell engulfs liquid droplets.", word: "PINOCYTOSIS", options: ["PINOCYTOSIS", "PHAGOCYTOSIS", "ENDOCYTOSIS"] },
-    { hint: "A type of musical scale with five notes per octave.", word: "PENTATONIC", options: ["PENTATONIC", "DIATONIC", "CHROMATIC"] },
-    { hint: "The study of the Earth's atmosphere and weather patterns.", word: "METEOROLOGY", options: ["METEOROLOGY", "CLIMATOLOGY", "OCEANOGRAPHY"] },
-    { hint: "A type of government where the wealthy rule.", word: "PLUTOCRACY", options: ["PLUTOCRACY", "OLIGARCHY", "MERITOCRACY"] },
-    { hint: "The process by which a cell releases substances to the outside.", word: "EXOCYTOSIS", options: ["EXOCYTOSIS", "ENDOCYTOSIS", "PHAGOCYTOSIS"] },
-    { hint: "A type of poem that tells a story, often with a tragic ending.", word: "BALLAD", options: ["BALLAD", "EPIC", "LYRIC"] },
-    { hint: "The study of the physical properties of sound.", word: "ACOUSTICS", options: ["ACOUSTICS", "AUDIOLOGY", "MUSICOLOGY"] },
-    { hint: "A type of logical reasoning that moves from general principles to specific conclusions.", word: "DEDUCTION", options: ["DEDUCTION", "INDUCTION", "ABDUCTION"] },
-    { hint: "The process by which plants absorb water through their roots.", word: "OSMOSIS", options: ["OSMOSIS", "DIFFUSION", "TRANSPIRATION"] },
-    { hint: "A type of art movement that focuses on the subjective expression of emotions.", word: "EXPRESSIONISM", options: ["EXPRESSIONISM", "IMPRESSIONISM", "ABSTRACT"] },
-    { hint: "The study of the structure of the universe.", word: "COSMOLOGY", options: ["COSMOLOGY", "ASTRONOMY", "ASTROPHYSICS"] }
+    { hint: "A philosophical concept that questions the nature of reality.", word: "IDEALISM", options: ["IDEALISM", "REALISM", "SKEPTICISM"] },
+    { hint: "The study of the origin of the universe.", word: "COSMOLOGY", options: ["COSMOLOGY", "ASTRONOMY", "ASTROLOGY"] },
+    { hint: "A political system where a few rule.", word: "OLIGARCHY", options: ["OLIGARCHY", "DEMOCRACY", "MONARCHY"] },
+    { hint: "The tendency to exert less effort in a group.", word: "SOCIAL_LOAFING", options: ["SOCIAL_LOAFING", "GROUPTHINK", "BANDWAGON"] },
+    { hint: "A logical fallacy attacking the person.", word: "AD_HOMINEM", options: ["AD_HOMINEM", "STRAW_MAN", "CIRCULAR"] },
+    { hint: "Economic theory of minimal intervention.", word: "LAISSEZ_FAIRE", options: ["LAISSEZ_FAIRE", "KEYNESIAN", "MARXIST"] },
+    { hint: "A genre combining horror and romance.", word: "GOTHIC", options: ["GOTHIC", "ROMANTIC", "SURREAL"] },
+    { hint: "Cell process of engulfing large particles.", word: "PHAGOCYTOSIS", options: ["PHAGOCYTOSIS", "PINOCYTOSIS", "EXOCYTOSIS"] },
+    { hint: "Musical term meaning 'gradually slowing'.", word: "RITARDANDO", options: ["RITARDANDO", "ACCELERANDO", "CRESCENDO"] },
+    { hint: "Legal principle against double trial.", word: "DOUBLE_JEOPARDY", options: ["DOUBLE_JEOPARDY", "HABEAS_CORPUS", "MIRANDA"] },
+    { hint: "A glassy volcanic rock.", word: "OBSIDIAN", options: ["OBSIDIAN", "BASALT", "GRANITE"] },
+    { hint: "Math branch dealing with shapes.", word: "GEOMETRY", options: ["GEOMETRY", "ALGEBRA", "TRIGONOMETRY"] },
+    { hint: "Painting style using small dots.", word: "POINTILLISM", options: ["POINTILLISM", "IMPRESSIONISM", "CUBISM"] },
+    { hint: "Study of organisms and environment.", word: "ECOLOGY", options: ["ECOLOGY", "BIOLOGY", "ZOOLOGY"] },
+    { hint: "Fluffy white cloud.", word: "CUMULUS", options: ["CUMULUS", "CIRRUS", "STRATUS"] },
+    { hint: "Liquid to gas process.", word: "EVAPORATION", options: ["EVAPORATION", "CONDENSATION", "SUBLIMATION"] },
+    { hint: "Government by religious leaders.", word: "THEOCRACY", options: ["THEOCRACY", "SECULAR", "PLUTOCRACY"] },
+    { hint: "Intense longing, often nostalgic.", word: "YEARNING", options: ["YEARNING", "LONGING", "HOMESICKNESS"] },
+    { hint: "Musical piece for solo and orchestra.", word: "CONCERTO", options: ["CONCERTO", "SONATA", "SYMPHONY"] },
+    { hint: "Study of Earth's structure.", word: "GEOLOGY", options: ["GEOLOGY", "GEOGRAPHY", "METEOROLOGY"] },
+    { hint: "Reasoning from specific to general.", word: "INDUCTION", options: ["INDUCTION", "DEDUCTION", "ABDUCTION"] },
+    { hint: "Art of persuasive speaking.", word: "RHETORIC", options: ["RHETORIC", "LOGIC", "GRAMMAR"] },
+    { hint: "Cell division producing four unique cells.", word: "MEIOSIS", options: ["MEIOSIS", "MITOSIS", "BINARY_FISSION"] },
+    { hint: "European cultural period 14th-17th century.", word: "RENAISSANCE", options: ["RENAISSANCE", "REFORMATION", "ENLIGHTENMENT"] },
+    { hint: "Polymer that can be remelted.", word: "THERMOPLASTIC", options: ["THERMOPLASTIC", "THERMOSET", "ELASTOMER"] },
+    { hint: "Study of mind and behavior.", word: "PSYCHOLOGY", options: ["PSYCHOLOGY", "SOCIOLOGY", "ANTHROPOLOGY"] },
+    { hint: "Government by elected representatives.", word: "REPUBLIC", options: ["REPUBLIC", "DEMOCRACY", "AUTOCRACY"] },
+    { hint: "Plant process converting light to energy.", word: "PHOTOSYNTHESIS", options: ["PHOTOSYNTHESIS", "RESPIRATION", "FERMENTATION"] },
+    { hint: "14-line poem, often iambic pentameter.", word: "SONNET", options: ["SONNET", "HAIKU", "LIMERICK"] },
+    { hint: "Study of matter and its properties.", word: "CHEMISTRY", options: ["CHEMISTRY", "PHYSICS", "BIOLOGY"] },
+    { hint: "Art movement focusing on subconscious.", word: "SURREALISM", options: ["SURREALISM", "DADAISM", "EXPRESSIONISM"] },
+    { hint: "Solid to gas directly.", word: "SUBLIMATION", options: ["SUBLIMATION", "DEPOSITION", "EVAPORATION"] },
+    { hint: "Government by a single absolute ruler.", word: "AUTOCRACY", options: ["AUTOCRACY", "DICTATORSHIP", "TYRANNY"] },
+    { hint: "Study of word origins.", word: "ETYMOLOGY", options: ["ETYMOLOGY", "LEXICOGRAPHY", "PHONOLOGY"] },
+    { hint: "Dance from Dominican Republic.", word: "MERENGUE", options: ["MERENGUE", "SALSA", "BACHATA"] },
+    { hint: "Medicine branch for urinary tract.", word: "UROLOGY", options: ["UROLOGY", "NEPHROLOGY", "ANDROLOGY"] },
+    { hint: "Architectural style with pointed arches.", word: "GOTHIC", options: ["GOTHIC", "ROMANESQUE", "BAROQUE"] },
+    { hint: "Study of people and environment.", word: "HUMAN_GEOGRAPHY", options: ["HUMAN_GEOGRAPHY", "PHYSICAL_GEOGRAPHY", "CARTOGRAPHY"] },
+    { hint: "Logical fallacy where conclusion is assumed.", word: "CIRCULAR", options: ["CIRCULAR", "TAUTOLOGY", "PARADOX"] },
+    { hint: "Cell engulfing liquid droplets.", word: "PINOCYTOSIS", options: ["PINOCYTOSIS", "PHAGOCYTOSIS", "ENDOCYTOSIS"] },
+    { hint: "Musical scale with five notes.", word: "PENTATONIC", options: ["PENTATONIC", "DIATONIC", "CHROMATIC"] },
+    { hint: "Study of atmosphere and weather.", word: "METEOROLOGY", options: ["METEOROLOGY", "CLIMATOLOGY", "OCEANOGRAPHY"] },
+    { hint: "Government by the wealthy.", word: "PLUTOCRACY", options: ["PLUTOCRACY", "OLIGARCHY", "MERITOCRACY"] },
+    { hint: "Cell releasing substances outside.", word: "EXOCYTOSIS", options: ["EXOCYTOSIS", "ENDOCYTOSIS", "PHAGOCYTOSIS"] },
+    { hint: "Poem that tells a story, often tragic.", word: "BALLAD", options: ["BALLAD", "EPIC", "LYRIC"] },
+    { hint: "Study of sound properties.", word: "ACOUSTICS", options: ["ACOUSTICS", "AUDIOLOGY", "MUSICOLOGY"] },
+    { hint: "Reasoning from general to specific.", word: "DEDUCTION", options: ["DEDUCTION", "INDUCTION", "ABDUCTION"] },
+    { hint: "Plant water absorption process.", word: "OSMOSIS", options: ["OSMOSIS", "DIFFUSION", "TRANSPIRATION"] },
+    { hint: "Art movement focusing on emotion.", word: "EXPRESSIONISM", options: ["EXPRESSIONISM", "IMPRESSIONISM", "ABSTRACT"] },
+    { hint: "Study of the universe's structure.", word: "COSMOLOGY", options: ["COSMOLOGY", "ASTRONOMY", "ASTROPHYSICS"] }
   ];
+
+  // Garantir 150 palavras (caso faltem, duplicamos aleatoriamente)
+  let wordPuzzles = [...wordPuzzlesRaw];
+  while (wordPuzzles.length < 150) {
+    wordPuzzles.push(wordPuzzlesRaw[Math.floor(Math.random() * wordPuzzlesRaw.length)]);
+  }
+  if (wordPuzzles.length > 150) wordPuzzles = wordPuzzles.slice(0, 150);
+
+  // Função para embaralhar array (Fisher-Yates)
+  function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
 
   let currentPuzzleIndex = 0;
   let puzzleScore = 0;
   let puzzleAnswered = false;
+  let shuffledPuzzles = [];
 
   function displayPuzzle() {
     const hintEl = document.getElementById('puzzleHint');
@@ -666,12 +745,12 @@
     const optionsEl = document.getElementById('puzzleOptions');
     const nextBtn = document.getElementById('nextPuzzleBtn');
     if (!hintEl || !displayEl || !optionsEl) return;
-    if (currentPuzzleIndex >= wordPuzzles.length) {
-      hintEl.innerHTML = "🎉 Congratulations! You completed all challenges! 🎉";
+    if (currentPuzzleIndex >= shuffledPuzzles.length) {
+      hintEl.innerHTML = "🎉 Congratulations! You completed all 150 challenges! 🎉";
       displayEl.innerHTML = ""; optionsEl.innerHTML = ""; if (nextBtn) nextBtn.style.display = "none";
       return;
     }
-    const puzzle = wordPuzzles[currentPuzzleIndex];
+    const puzzle = shuffledPuzzles[currentPuzzleIndex];
     hintEl.innerHTML = puzzle.hint;
     const displayWord = puzzle.word.split('').map(() => '_').join(' ');
     displayEl.innerHTML = displayWord;
@@ -717,30 +796,18 @@
   }
 
   function initWordPuzzle() {
+    // Embaralhar a lista sempre que a aba for ativada (cada aluno, cada dia)
+    shuffledPuzzles = shuffleArray([...wordPuzzles]);
+    currentPuzzleIndex = 0;
+    puzzleScore = 0;
+    puzzleAnswered = false;
+    document.getElementById('puzzleScore').innerHTML = '🏆 Score: 0';
+    displayPuzzle();
+
     const nextBtn = document.getElementById('nextPuzzleBtn');
     if (nextBtn && !nextBtn.hasListener) {
       nextBtn.hasListener = true;
       nextBtn.addEventListener('click', nextPuzzle);
-    }
-    const wordPuzzleTab = document.getElementById('wordPuzzle');
-    const observer = new MutationObserver(function(mutations) {
-      mutations.forEach(function(mutation) {
-        if (mutation.attributeName === 'class' && wordPuzzleTab.classList.contains('active')) {
-          currentPuzzleIndex = 0;
-          puzzleScore = 0;
-          puzzleAnswered = false;
-          document.getElementById('puzzleScore').innerHTML = '🏆 Score: 0';
-          displayPuzzle();
-        }
-      });
-    });
-    if (wordPuzzleTab) observer.observe(wordPuzzleTab, { attributes: true });
-    if (wordPuzzleTab && wordPuzzleTab.classList.contains('active')) {
-      currentPuzzleIndex = 0;
-      puzzleScore = 0;
-      puzzleAnswered = false;
-      document.getElementById('puzzleScore').innerHTML = '🏆 Score: 0';
-      displayPuzzle();
     }
   }
 
