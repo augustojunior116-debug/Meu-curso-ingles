@@ -1,4 +1,3 @@
-<script> document.addEventListener('DOMContentLoaded', () => {</script>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -7,9 +6,7 @@
   <title>Augusto & Laurindo | Inglês Online</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    /* ========== ESTILOS COMPLETOS ========== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; background: linear-gradient(145deg, #F9FAFB 0%, #EFF3F8 100%); color: #1E293B; line-height: 1.5; }
     h1, h2, h3, .logo, .tab-btn, .btn { font-family: 'Playfair Display', serif; }
@@ -132,11 +129,10 @@
       <div id="alunosLoginArea" style="text-align:center; padding:40px;">
         <h3>🔐 Acesso para alunos</h3>
         <div id="loginForm">
-          <p>Digite o seu e‑mail e senha para iniciar sessão.</p>
-          <input type="email" id="loginEmail" placeholder="E-mail" style="width:280px; margin:8px;"><br>
-          <input type="password" id="loginPassword" placeholder="Senha" style="width:280px; margin:8px;"><br>
-          <button id="loginBtn" class="btn">Entrar</button>
-          <div id="loginMessage" style="margin-top:12px; color:red;"></div>
+          <p>Digite a palavra‑passe que recebeu do professor.</p>
+          <input type="password" id="alunosPassword" placeholder="Palavra‑passe" style="width:280px; margin:8px;"><br>
+          <button id="doLoginBtnAlunos" class="btn">Entrar</button>
+          <div id="loginErrorMsg" style="margin-top:12px; color:red;"></div>
         </div>
       </div>
 
@@ -245,83 +241,78 @@
 </div>
 
 <script>
-  // ========== SUPABASE SETUP ==========
-  const SUPABASE_URL = 'https://vqxjvniosihsqarjimvb.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_QP4S8U7-LdzB0NEW1sbOXA_uKbndvm2';
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  let currentUser = null;
-  let puzzleScore = 0;
-  let currentPuzzleIndex = 0;
+  // ========== TABS PRINCIPAIS ==========
+  const tabs = document.querySelectorAll('.tab-btn');
+  const contents = document.querySelectorAll('.tab-content');
+  function activateTab(tabId) {
+    contents.forEach(c => c.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    tabs.forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+    if(tabId === 'alunos') checkAlunosSession();
+  }
+  tabs.forEach(btn => btn.addEventListener('click', () => { const id = btn.getAttribute('data-tab'); activateTab(id); }));
+  document.getElementById('goToTestBtn')?.addEventListener('click', (e) => { e.preventDefault(); activateTab('test'); });
+  document.getElementById('goToTestFromPricing')?.addEventListener('click', (e) => { e.preventDefault(); activateTab('test'); });
 
-  // ========== HELPER FUNCTIONS ==========
-  function showLoginForm() { 
-    document.getElementById('alunosLoginArea').style.display = 'block'; 
-    document.getElementById('alunosMateriaisArea').style.display = 'none'; 
-    document.getElementById('aiFloatingBtn').style.display = 'none'; 
-  }
-  function showMaterials() { 
-    document.getElementById('alunosLoginArea').style.display = 'none'; 
-    document.getElementById('alunosMateriaisArea').style.display = 'block'; 
-    document.getElementById('aiFloatingBtn').style.display = 'flex'; 
-  }
-  function showMessage(elementId, msg, isError=true) { 
-    const el = document.getElementById(elementId); 
-    if(el) { 
-      el.innerText = msg; 
-      el.style.color = isError ? 'red' : 'green'; 
-      setTimeout(()=>el.innerText='', 4000); 
-    } 
-  }
-  
-  async function saveProgress(userId, score, index) {
-    if(!userId) return;
-    const { error } = await supabase.from('user_progress').upsert({ user_id: userId, puzzle_score: score, puzzle_index: index, last_updated: new Date() }, { onConflict: 'user_id' });
-    if(error) console.error('Erro ao guardar progresso:', error);
-  }
-  async function loadProgress(userId) {
-    if(!userId) return { score: 0, index: 0 };
-    const { data, error } = await supabase.from('user_progress').select('puzzle_score, puzzle_index').eq('user_id', userId).single();
-    if(error && error.code !== 'PGRST116') console.error('Erro ao carregar progresso:', error);
-    return data ? { score: data.puzzle_score, index: data.puzzle_index } : { score: 0, index: 0 };
+  // ========== MENU MOBILE ==========
+  const mobileBtn = document.getElementById('mobileMenuBtn');
+  const tabsCont = document.getElementById('tabsContainer');
+  if(mobileBtn) {
+    mobileBtn.addEventListener('click', () => tabsCont.classList.toggle('show'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => { if(window.innerWidth <= 768) tabsCont.classList.remove('show'); }));
   }
 
-  // ========== AUTH ==========
-  document.getElementById('loginBtn').addEventListener('click', async () => {
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value.trim();
-    if(!email || !password) { showMessage('loginMessage', 'Preencha e-mail e senha.'); return; }
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if(error) { showMessage('loginMessage', error.message); return; }
-    currentUser = data.user;
-    const progress = await loadProgress(currentUser.id);
-    puzzleScore = progress.score;
-    currentPuzzleIndex = progress.index;
-    document.getElementById('puzzleScore').innerHTML = `🏆 Pontuação: ${puzzleScore}`;
-    showMaterials();
-    initWordPuzzle();
-    updateProgressDisplay();
-    showMessage('loginMessage', 'Login bem-sucedido!', false);
-  });
-  document.getElementById('logoutBtnAlunos').addEventListener('click', async () => {
-    await supabase.auth.signOut();
-    currentUser = null;
-    showLoginForm();
-  });
-  supabase.auth.onAuthStateChange(async (event, session) => {
-    if(event === 'SIGNED_IN' && session) {
-      currentUser = session.user;
-      const progress = await loadProgress(currentUser.id);
-      puzzleScore = progress.score;
-      currentPuzzleIndex = progress.index;
-      document.getElementById('puzzleScore').innerHTML = `🏆 Pontuação: ${puzzleScore}`;
-      showMaterials();
-      initWordPuzzle();
-      updateProgressDisplay();
-    } else if(event === 'SIGNED_OUT') {
-      currentUser = null;
-      showLoginForm();
+  // ========== ÁREA DO ALUNO ==========
+  const VALID_PASSWORDS = ["Beginner1", "Intermediate2"];
+  const loginArea = document.getElementById('alunosLoginArea');
+  const materiaisDiv = document.getElementById('alunosMateriaisArea');
+  const pwdInput = document.getElementById('alunosPassword');
+  const loginBtn = document.getElementById('doLoginBtnAlunos');
+  const logoutBtn = document.getElementById('logoutBtnAlunos');
+  const errorMsg = document.getElementById('loginErrorMsg');
+  const welcomeMsg = document.getElementById('welcomeLevelMsg');
+
+  function showLoginForm() { loginArea.style.display = 'block'; materiaisDiv.style.display = 'none'; document.getElementById('aiFloatingBtn').style.display = 'none'; if(errorMsg) errorMsg.innerText = ''; }
+  function showMaterials(level) { loginArea.style.display = 'none'; materiaisDiv.style.display = 'block'; document.getElementById('aiFloatingBtn').style.display = 'flex'; if(welcomeMsg) welcomeMsg.innerText = `Bem‑vindo! Nível: ${level}`; initInnerTabs(); initWordPuzzle(); initSpeech(); loadSavedProgress(); }
+  function clearSession() { sessionStorage.removeItem('alunosLogged'); sessionStorage.removeItem('alunosLevel'); }
+  function saveSession(level) { sessionStorage.setItem('alunosLogged', 'true'); sessionStorage.setItem('alunosLevel', level); }
+  function isLoggedIn() { return sessionStorage.getItem('alunosLogged') === 'true'; }
+  function getLoggedLevel() { return sessionStorage.getItem('alunosLevel') || ''; }
+  function checkAlunosSession() { if(isLoggedIn()) showMaterials(getLoggedLevel()); else showLoginForm(); }
+
+  if(loginBtn) {
+    loginBtn.addEventListener('click', () => {
+      const pass = pwdInput.value.trim();
+      if(VALID_PASSWORDS.includes(pass)) {
+        let level = (pass === "Beginner1") ? "Iniciante" : "Intermediário";
+        saveSession(level);
+        showMaterials(level);
+        pwdInput.value = '';
+      } else {
+        errorMsg.innerText = 'Palavra‑passe incorreta. Tente novamente.';
+      }
+    });
+  }
+  if(logoutBtn) logoutBtn.addEventListener('click', () => { clearSession(); showLoginForm(); });
+  if(document.getElementById('alunos').classList.contains('active')) checkAlunosSession();
+
+  function initInnerTabs() {
+    const innerBtns = document.querySelectorAll('.tab-inner-btn');
+    const innerContents = document.querySelectorAll('.tab-inner-content');
+    if(innerBtns.length === 0) return;
+    innerBtns.forEach(btn => {
+      btn.removeEventListener('click', innerClickHandler);
+      btn.addEventListener('click', innerClickHandler);
+    });
+    function innerClickHandler(e) {
+      const target = e.currentTarget.getAttribute('data-inner');
+      innerContents.forEach(c => c.classList.remove('active'));
+      innerBtns.forEach(b => b.classList.remove('active'));
+      document.getElementById(target).classList.add('active');
+      e.currentTarget.classList.add('active');
     }
-  });
+  }
 
   // ========== WORD PUZZLE ==========
   const basePuzzles = [
@@ -337,29 +328,17 @@
     { hint: "The fastest land animal.", word: "CHEETAH", options: ["CHEETAH", "LION", "TIGER"] }
   ];
   let wordPuzzles = [...basePuzzles];
-  while(wordPuzzles.length < 150) {
-    let base = basePuzzles[wordPuzzles.length % basePuzzles.length];
-    wordPuzzles.push({ ...base, word: base.word + (wordPuzzles.length > 100 ? '_' : '') });
-  }
+  while(wordPuzzles.length < 150) wordPuzzles.push({ ...basePuzzles[wordPuzzles.length % basePuzzles.length], word: basePuzzles[wordPuzzles.length % basePuzzles.length].word + (wordPuzzles.length > 100 ? '_' : '') });
   function shuffleArray(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
-  let shuffledPuzzles = [];
-  let puzzleAnswered = false;
-  function speakWord(word) { if(window.speechSynthesis) { const utterance = new SpeechSynthesisUtterance(word); utterance.lang = 'en-US'; window.speechSynthesis.cancel(); window.speechSynthesis.speak(utterance); } }
+  let shuffledPuzzles = [], currentPuzzleIndex = 0, puzzleScore = 0, puzzleAnswered = false;
+  function speakWord(word) { if(window.speechSynthesis) { const u = new SpeechSynthesisUtterance(word); u.lang = 'en-US'; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); } }
   function displayPuzzle() {
-    const hintEl = document.getElementById('puzzleHint');
-    const displayEl = document.getElementById('puzzleWordDisplay');
-    const optionsEl = document.getElementById('puzzleOptions');
-    const nextBtn = document.getElementById('nextPuzzleBtn');
-    if (!hintEl || !displayEl || !optionsEl) return;
-    if (currentPuzzleIndex >= shuffledPuzzles.length) {
-      hintEl.innerHTML = "🎉 Congratulations! You completed all challenges! 🎉";
-      displayEl.innerHTML = ""; optionsEl.innerHTML = ""; if (nextBtn) nextBtn.style.display = "none";
-      return;
-    }
+    const hintEl = document.getElementById('puzzleHint'), displayEl = document.getElementById('puzzleWordDisplay'), optionsEl = document.getElementById('puzzleOptions'), nextBtn = document.getElementById('nextPuzzleBtn');
+    if(!hintEl || !displayEl || !optionsEl) return;
+    if(currentPuzzleIndex >= shuffledPuzzles.length) { hintEl.innerHTML = "🎉 Congratulations! You completed all challenges! 🎉"; displayEl.innerHTML = ""; optionsEl.innerHTML = ""; if(nextBtn) nextBtn.style.display = "none"; return; }
     const puzzle = shuffledPuzzles[currentPuzzleIndex];
     hintEl.innerHTML = puzzle.hint;
-    const displayWord = puzzle.word.split('').map(() => '_').join(' ');
-    displayEl.innerHTML = displayWord;
+    displayEl.innerHTML = puzzle.word.split('').map(() => '_').join(' ');
     optionsEl.innerHTML = '';
     puzzle.options.forEach(opt => {
       const btn = document.createElement('button');
@@ -369,229 +348,149 @@
       btn.addEventListener('click', () => checkAnswer(opt, puzzle.word));
       optionsEl.appendChild(btn);
     });
-    if (nextBtn) nextBtn.style.display = "none";
+    if(nextBtn) nextBtn.style.display = "none";
     document.getElementById('puzzleFeedback').innerHTML = "";
     puzzleAnswered = false;
   }
-  async function checkAnswer(selected, correct) {
-    if (puzzleAnswered) return;
-    const feedbackDiv = document.getElementById('puzzleFeedback');
-    if (selected === correct) {
-      feedbackDiv.innerHTML = '<span style="color:green;">✅ Correct! +10 points</span>';
+  function checkAnswer(selected, correct) {
+    if(puzzleAnswered) return;
+    const fb = document.getElementById('puzzleFeedback');
+    if(selected === correct) {
+      fb.innerHTML = '<span style="color:green;">✅ Correct! +10 points</span>';
       puzzleScore += 10;
       puzzleAnswered = true;
       document.getElementById('puzzleScore').innerHTML = `🏆 Pontuação: ${puzzleScore}`;
       speakWord(correct);
-      if(currentUser) await saveProgress(currentUser.id, puzzleScore, currentPuzzleIndex);
+      saveProgress();
       updateProgressDisplay();
       const nextBtn = document.getElementById('nextPuzzleBtn');
-      if (nextBtn) nextBtn.style.display = "inline-block";
+      if(nextBtn) nextBtn.style.display = "inline-block";
     } else {
-      feedbackDiv.innerHTML = `<span style="color:red;">❌ Wrong! The correct answer was "${correct}".</span>`;
+      fb.innerHTML = `<span style="color:red;">❌ Wrong! The correct answer was "${correct}".</span>`;
       puzzleAnswered = true;
       const nextBtn = document.getElementById('nextPuzzleBtn');
-      if (nextBtn) nextBtn.style.display = "inline-block";
+      if(nextBtn) nextBtn.style.display = "inline-block";
     }
   }
-  function nextPuzzle() {
-    if (!puzzleAnswered) { document.getElementById('puzzleFeedback').innerHTML = '<span style="color:orange;">⚠️ Please answer the current challenge first.</span>'; return; }
-    currentPuzzleIndex++;
-    displayPuzzle();
-  }
-  function initWordPuzzle() {
-    shuffledPuzzles = shuffleArray([...wordPuzzles]);
-    currentPuzzleIndex = currentPuzzleIndex || 0;
-    puzzleAnswered = false;
-    displayPuzzle();
-    const nextBtn = document.getElementById('nextPuzzleBtn');
-    if (nextBtn && !nextBtn.hasListener) { nextBtn.hasListener = true; nextBtn.addEventListener('click', nextPuzzle); }
+  function nextPuzzle() { if(!puzzleAnswered) { document.getElementById('puzzleFeedback').innerHTML = '<span style="color:orange;">⚠️ Answer first.</span>'; return; } currentPuzzleIndex++; displayPuzzle(); }
+  function initWordPuzzle() { shuffledPuzzles = shuffleArray([...wordPuzzles]); currentPuzzleIndex = 0; puzzleScore = 0; puzzleAnswered = false; document.getElementById('puzzleScore').innerHTML = '🏆 Pontuação: 0'; displayPuzzle(); const nextBtn = document.getElementById('nextPuzzleBtn'); if(nextBtn && !nextBtn.hasListener) { nextBtn.hasListener = true; nextBtn.addEventListener('click', nextPuzzle); } }
+
+  // ========== PROGRESS & BADGES ==========
+  function saveProgress() { localStorage.setItem('puzzleScore', puzzleScore); localStorage.setItem('puzzleIndex', currentPuzzleIndex); }
+  function loadSavedProgress() { const savedScore = localStorage.getItem('puzzleScore'); if(savedScore !== null) puzzleScore = parseInt(savedScore); else puzzleScore = 0; const savedIndex = localStorage.getItem('puzzleIndex'); if(savedIndex !== null) currentPuzzleIndex = parseInt(savedIndex); else currentPuzzleIndex = 0; document.getElementById('puzzleScore').innerHTML = `🏆 Pontuação: ${puzzleScore}`; updateProgressDisplay(); }
+  function getBadges(score) { let b=[]; if(score>=100) b.push('🥉 100 pontos'); if(score>=500) b.push('🥈 500 pontos'); if(score>=1000) b.push('🥇 1000 pontos'); return b; }
+  function updateProgressDisplay() {
+    const score = puzzleScore;
+    document.getElementById('progressScore').innerText = score;
+    let next = ''; if(score<100) next = `Faltam ${100-score} para 🥉`; else if(score<500) next = `Faltam ${500-score} para 🥈`; else if(score<1000) next = `Faltam ${1000-score} para 🥇`; else next = '🎉 Todas as medalhas!';
+    document.getElementById('nextBadgeMsg').innerText = next;
+    const percent = Math.min((score/1000)*100,100);
+    document.getElementById('progressFill').style.width = `${percent}%`;
+    const badges = getBadges(score);
+    const bc = document.getElementById('badgesContainer');
+    if(bc) bc.innerHTML = badges.map(b => `<p>${b}</p>`).join('');
   }
 
   // ========== PRACTICE HUB ==========
-  let speechSynth = window.speechSynthesis;
-  let voicesList = [];
+  let speechSynth = window.speechSynthesis, voicesList = [];
   function loadVoices() {
     voicesList = speechSynth.getVoices();
-    const voiceSelect = document.getElementById('voiceSelect');
-    if (!voiceSelect) return;
-    voiceSelect.innerHTML = '';
-    voicesList.forEach((voice, i) => {
-      if (voice.lang.startsWith('en')) {
-        const option = document.createElement('option');
-        option.value = i;
-        let label = `${voice.name} (${voice.lang})`;
-        if (voice.lang === 'en-US') label += ' ★ American English';
-        if (voice.lang === 'en-GB') label += ' ★ British English';
-        option.textContent = label;
-        voiceSelect.appendChild(option);
-      }
-    });
+    const sel = document.getElementById('voiceSelect');
+    if(!sel) return;
+    sel.innerHTML = '';
+    voicesList.forEach((v,i) => { if(v.lang.startsWith('en')) { const opt = document.createElement('option'); opt.value = i; opt.textContent = `${v.name} (${v.lang})`; sel.appendChild(opt); } });
   }
-  function speakText(text, voiceIndex = null, rate = 1.0) {
-    if (!speechSynth) { alert("Seu navegador não suporta síntese de voz."); return; }
-    speechSynth.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    if (voiceIndex !== null && voicesList[voiceIndex]) utterance.voice = voicesList[voiceIndex];
-    else { const usVoice = voicesList.find(v => v.lang === 'en-US'); if (usVoice) utterance.voice = usVoice; }
-    utterance.lang = 'en-US'; utterance.rate = rate;
-    speechSynth.speak(utterance);
-  }
-  document.getElementById('speakBtn')?.addEventListener('click', () => {
-    const text = document.getElementById('textToSpeak').value.trim();
-    if (!text) { alert("Digite uma palavra ou frase."); return; }
-    const voiceSelect = document.getElementById('voiceSelect');
-    const voiceIndex = voiceSelect ? parseInt(voiceSelect.value) : null;
-    const speedSelect = document.getElementById('speedSelect');
-    const rate = speedSelect ? parseFloat(speedSelect.value) : 1.0;
-    speakText(text, voiceIndex, rate);
-  });
+  function speakText(text, voiceIdx=null, rate=1.0) { if(!speechSynth) return; speechSynth.cancel(); const u = new SpeechSynthesisUtterance(text); if(voiceIdx!==null && voicesList[voiceIdx]) u.voice = voicesList[voiceIdx]; else { const us = voicesList.find(v=>v.lang==='en-US'); if(us) u.voice = us; } u.lang = 'en-US'; u.rate = rate; speechSynth.speak(u); }
+  document.getElementById('speakBtn')?.addEventListener('click', () => { const txt = document.getElementById('textToSpeak').value.trim(); if(!txt) { alert("Digite uma palavra ou frase."); return; } const vIdx = document.getElementById('voiceSelect')?.value; const rate = parseFloat(document.getElementById('speedSelect')?.value || 1); speakText(txt, vIdx ? parseInt(vIdx) : null, rate); });
   const wordList = ["schedule","comfortable","photography","though","thought","through","enough","vegetable","interesting","world","specific","usually","business","clothes","debris","queue","colonel","rural","squirrel","choir","mischievous","onomatopoeia","scissors","species","suggest","temperature","thorough","tomb","twelfth","vacuum","vehicle","Wednesday","wholly","yacht","zucchini","accommodate","aggressive","apparent","committee","conscience","conscientious","definitely","embarrass","exaggerate","handkerchief","independence","maintenance","necessary","occasion","occurrence","parallel","possession","questionnaire","receive","recommend","restaurant","rhythm","separate","successful","unnecessary","until","vacancy","weather","weird","whether","withhold","acknowledge","anonymous","broccoli","caffeine","camouflage","candidate","collaborate","deteriorate","entrepreneur","epitome","espresso","et cetera","explicit","foreign","gauge","government","hierarchy","hypocrite","idiosyncrasy","influenza","jewelry","liaison","library","licence","medicine","millennium","miniature","minuscule","misspell","moustache","neighbour","nuclear","occurred","pharaoh","privilege","pronunciation"];
   let currentRandomWord = "";
-  document.getElementById('randomWordBtn')?.addEventListener('click', () => {
-    const randomIndex = Math.floor(Math.random() * wordList.length);
-    currentRandomWord = wordList[randomIndex];
-    const voiceSelect = document.getElementById('voiceSelect');
-    const voiceIndex = voiceSelect ? parseInt(voiceSelect.value) : null;
-    const speedSelect = document.getElementById('speedSelect');
-    const rate = speedSelect ? parseFloat(speedSelect.value) : 1.0;
-    speakText(currentRandomWord, voiceIndex, rate);
-    document.getElementById('guessResult').innerHTML = `<p>🔊 Nova palavra. Tente escrevê‑la abaixo.</p>`;
-    document.getElementById('guessInput').value = '';
-  });
-  document.getElementById('repeatWordBtn')?.addEventListener('click', () => {
-    if (!currentRandomWord) { document.getElementById('guessResult').innerHTML = `<p style="color:orange;">⚠️ Clique primeiro em "Nova palavra".</p>`; return; }
-    const voiceSelect = document.getElementById('voiceSelect');
-    const voiceIndex = voiceSelect ? parseInt(voiceSelect.value) : null;
-    const speedSelect = document.getElementById('speedSelect');
-    const rate = speedSelect ? parseFloat(speedSelect.value) : 1.0;
-    speakText(currentRandomWord, voiceIndex, rate);
-    document.getElementById('guessResult').innerHTML = `<p>🔁 A repetir: "${currentRandomWord}"</p>`;
-  });
-  document.getElementById('checkGuessBtn')?.addEventListener('click', () => {
-    const guess = document.getElementById('guessInput').value.trim().toLowerCase();
-    if (!currentRandomWord) { document.getElementById('guessResult').innerHTML = `<p style="color:red;">⚠️ Clique primeiro em "Nova palavra".</p>`; return; }
-    if (guess === currentRandomWord.toLowerCase()) { document.getElementById('guessResult').innerHTML = `<p style="color:green;">✅ Correct! Great job.</p>`; currentRandomWord = ""; document.getElementById('guessInput').value = ''; }
-    else { document.getElementById('guessResult').innerHTML = `<p style="color:red;">❌ Wrong. The word was: <strong>${currentRandomWord}</strong>. Try another.</p>`; }
-  });
-  if (window.speechSynthesis) { speechSynth.onvoiceschanged = loadVoices; loadVoices(); }
+  document.getElementById('randomWordBtn')?.addEventListener('click', () => { const idx = Math.floor(Math.random() * wordList.length); currentRandomWord = wordList[idx]; const vIdx = document.getElementById('voiceSelect')?.value; const rate = parseFloat(document.getElementById('speedSelect')?.value || 1); speakText(currentRandomWord, vIdx ? parseInt(vIdx) : null, rate); document.getElementById('guessResult').innerHTML = `<p>🔊 Nova palavra. Tente escrevê‑la.</p>`; document.getElementById('guessInput').value = ''; });
+  document.getElementById('repeatWordBtn')?.addEventListener('click', () => { if(!currentRandomWord) { document.getElementById('guessResult').innerHTML = '<p style="color:orange;">⚠️ Clique em "Nova palavra" primeiro.</p>'; return; } const vIdx = document.getElementById('voiceSelect')?.value; const rate = parseFloat(document.getElementById('speedSelect')?.value || 1); speakText(currentRandomWord, vIdx ? parseInt(vIdx) : null, rate); document.getElementById('guessResult').innerHTML = `<p>🔁 A repetir: "${currentRandomWord}"</p>`; });
+  document.getElementById('checkGuessBtn')?.addEventListener('click', () => { const guess = document.getElementById('guessInput').value.trim().toLowerCase(); if(!currentRandomWord) { document.getElementById('guessResult').innerHTML = '<p style="color:red;">⚠️ Clique em "Nova palavra" primeiro.</p>'; return; } if(guess === currentRandomWord.toLowerCase()) { document.getElementById('guessResult').innerHTML = '<p style="color:green;">✅ Correct! Great job.</p>'; currentRandomWord = ""; document.getElementById('guessInput').value = ''; } else { document.getElementById('guessResult').innerHTML = `<p style="color:red;">❌ Wrong. The word was: <strong>${currentRandomWord}</strong>. Try another.</p>`; } });
+  if(window.speechSynthesis) { speechSynth.onvoiceschanged = loadVoices; loadVoices(); }
 
-  // ========== AI TOOLS ==========
+  // ========== AI TOOLS (Dicionário e Gramática) ==========
   async function searchDictionary() {
     const word = document.getElementById('dictWord').value.trim();
-    if (!word) return;
-    const resultDiv = document.getElementById('dictResult');
-    const audioDiv = document.getElementById('dictAudio');
-    resultDiv.innerHTML = '<p>Carregando...</p>';
-    audioDiv.innerHTML = '';
+    if(!word) return;
+    const resultDiv = document.getElementById('dictResult'), audioDiv = document.getElementById('dictAudio');
+    resultDiv.innerHTML = '<p>Carregando...</p>'; audioDiv.innerHTML = '';
     try {
-      const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-      if (!response.ok) throw new Error('Palavra não encontrada');
-      const data = await response.json();
-      const definition = data[0]?.meanings[0]?.definitions[0]?.definition || 'Definição não disponível.';
+      const resp = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+      if(!resp.ok) throw new Error('Palavra não encontrada');
+      const data = await resp.json();
+      const def = data[0]?.meanings[0]?.definitions[0]?.definition || 'Definição não disponível.';
       const phonetic = data[0]?.phonetic || '';
       const audioUrl = data[0]?.phonetics?.find(p => p.audio)?.audio;
-      resultDiv.innerHTML = `<p><strong>${word}</strong> ${phonetic ? `(${phonetic})` : ''}</p><p>${definition}</p>`;
-      if (audioUrl) {
+      resultDiv.innerHTML = `<p><strong>${word}</strong> ${phonetic ? `(${phonetic})` : ''}</p><p>${def}</p>`;
+      if(audioUrl) {
         const audio = new Audio(audioUrl);
-        const playBtn = document.createElement('button');
-        playBtn.textContent = '🔊 Ouvir pronúncia';
-        playBtn.className = 'btn btn-outline';
-        playBtn.style.marginTop = '8px';
-        playBtn.onclick = () => audio.play();
-        audioDiv.appendChild(playBtn);
+        const btn = document.createElement('button');
+        btn.textContent = '🔊 Ouvir pronúncia';
+        btn.className = 'btn btn-outline';
+        btn.onclick = () => audio.play();
+        audioDiv.appendChild(btn);
       } else {
-        const speakBtn = document.createElement('button');
-        speakBtn.textContent = '🔊 Ouvir (TTS)';
-        speakBtn.className = 'btn btn-outline';
-        speakBtn.style.marginTop = '8px';
-        speakBtn.onclick = () => speakText(word);
-        audioDiv.appendChild(speakBtn);
+        const btn = document.createElement('button');
+        btn.textContent = '🔊 Ouvir (TTS)';
+        btn.className = 'btn btn-outline';
+        btn.onclick = () => speakText(word);
+        audioDiv.appendChild(btn);
       }
-    } catch (error) {
-      resultDiv.innerHTML = `<p style="color:red;">Erro: ${error.message}</p>`;
-    }
+    } catch(e) { resultDiv.innerHTML = `<p style="color:red;">Erro: ${e.message}</p>`; }
   }
   async function checkGrammar() {
     const text = document.getElementById('grammarText').value.trim();
-    if (!text) return;
+    if(!text) return;
     const resultDiv = document.getElementById('grammarResult');
     resultDiv.innerHTML = '<p>Analisando...</p>';
     try {
-      const response = await fetch('https://api.languagetool.org/v2/check', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ text: text, language: 'en-US' })
-      });
-      const data = await response.json();
-      if (data.matches && data.matches.length > 0) {
+      const resp = await fetch('https://api.languagetool.org/v2/check', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ text: text, language: 'en-US' }) });
+      const data = await resp.json();
+      if(data.matches && data.matches.length) {
         let html = '<p><strong>Sugestões:</strong></p><ul>';
-        data.matches.forEach(match => {
-          const replacement = match.replacements[0]?.value || '';
-          html += `<li><strong>${match.message}</strong><br>Original: "${match.context.text.substring(match.context.offset, match.context.offset + match.context.length)}"<br>Sugestão: ${replacement}</li>`;
-        });
-        html += '</ul>';
-        resultDiv.innerHTML = html;
-      } else {
-        resultDiv.innerHTML = '<p style="color:green;">✅ Nenhum erro gramatical encontrado.</p>';
-      }
-    } catch (error) {
-      resultDiv.innerHTML = `<p style="color:red;">Erro ao verificar gramática: ${error.message}</p>`;
-    }
+        data.matches.forEach(m => { const rep = m.replacements[0]?.value || ''; html += `<li><strong>${m.message}</strong><br>Original: "${m.context.text.substring(m.context.offset, m.context.offset + m.context.length)}"<br>Sugestão: ${rep}</li>`; });
+        html += '</ul>'; resultDiv.innerHTML = html;
+      } else { resultDiv.innerHTML = '<p style="color:green;">✅ Nenhum erro gramatical encontrado.</p>'; }
+    } catch(e) { resultDiv.innerHTML = `<p style="color:red;">Erro: ${e.message}</p>`; }
   }
   document.getElementById('searchDictBtn')?.addEventListener('click', searchDictionary);
   document.getElementById('checkGrammarBtn')?.addEventListener('click', checkGrammar);
 
-  // ========== PROGRESS & BADGES ==========
-  function getBadges(score) {
-    let badges = [];
-    if (score >= 100) badges.push('🥉 100 pontos');
-    if (score >= 500) badges.push('🥈 500 pontos');
-    if (score >= 1000) badges.push('🥇 1000 pontos');
-    return badges;
+  // ========== AI FLOATING ASSISTANT ==========
+  const aiBtn = document.getElementById('aiFloatingBtn');
+  const aiModal = document.getElementById('aiModal');
+  const closeAi = document.getElementById('closeAiModal');
+  const askAi = document.getElementById('askAiBtn');
+  const aiQuestion = document.getElementById('aiQuestion');
+  const aiChat = document.getElementById('aiChatBody');
+  if(aiBtn) aiBtn.addEventListener('click', () => aiModal.classList.toggle('active'));
+  if(closeAi) closeAi.addEventListener('click', () => aiModal.classList.remove('active'));
+  async function askAI() {
+    const q = aiQuestion.value.trim();
+    if(!q) return;
+    const userMsg = document.createElement('p'); userMsg.innerHTML = `<strong>Você:</strong> ${q}`; aiChat.appendChild(userMsg);
+    aiQuestion.value = '';
+    let ans = '';
+    if(q.split(' ').length === 1 && !q.includes('?')) {
+      try {
+        const resp = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${q}`);
+        if(resp.ok) { const data = await resp.json(); const def = data[0]?.meanings[0]?.definitions[0]?.definition || 'Definição não encontrada.'; ans = `📖 Definição de "${q}": ${def}`; }
+        else { ans = `Desculpe, não encontrei a palavra "${q}".`; }
+      } catch(e) { ans = `Erro ao buscar definição.`; }
+    } else {
+      try {
+        const resp = await fetch('https://api.languagetool.org/v2/check', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ text: q, language: 'en-US' }) });
+        const data = await resp.json();
+        if(data.matches && data.matches.length) { ans = `📝 Sugestões gramaticais:<br>`; data.matches.slice(0,2).forEach(m => { ans += `- ${m.message}<br>`; }); }
+        else { ans = `✅ Sua frase parece correta gramaticalmente!`; }
+      } catch(e) { ans = `Desculpe, não pude verificar a gramática agora.`; }
+    }
+    const botMsg = document.createElement('p'); botMsg.innerHTML = `<strong>Assistente:</strong> ${ans}`; aiChat.appendChild(botMsg);
+    aiChat.scrollTop = aiChat.scrollHeight;
   }
-  function updateProgressDisplay() {
-    const score = puzzleScore;
-    document.getElementById('progressScore').innerText = score;
-    let nextBadge = '';
-    if (score < 100) nextBadge = `Faltam ${100 - score} pontos para a medalha 🥉`;
-    else if (score < 500) nextBadge = `Faltam ${500 - score} pontos para a medalha 🥈`;
-    else if (score < 1000) nextBadge = `Faltam ${1000 - score} pontos para a medalha 🥇`;
-    else nextBadge = '🎉 Todas as medalhas conquistadas!';
-    document.getElementById('nextBadgeMsg').innerText = nextBadge;
-    const percent = Math.min((score / 1000) * 100, 100);
-    document.getElementById('progressFill').style.width = `${percent}%`;
-    const badgesList = getBadges(score);
-    const badgesContainer = document.getElementById('badgesContainer');
-    if (badgesContainer) { badgesContainer.innerHTML = badgesList.map(b => `<p>${b}</p>`).join(''); }
-  }
-
-  // ========== TABS PRINCIPAIS ==========
-  function activateTab(tabId) {
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
-  }
-  document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => { const id = btn.getAttribute('data-tab'); activateTab(id); }));
-  document.getElementById('goToTestBtn')?.addEventListener('click', (e) => { e.preventDefault(); activateTab('test'); });
-  document.getElementById('goToTestFromPricing')?.addEventListener('click', (e) => { e.preventDefault(); activateTab('test'); });
-
-  // ========== INNER TABS ==========
-  document.querySelectorAll('.tab-inner-btn').forEach(btn => btn.addEventListener('click', () => {
-    const target = btn.getAttribute('data-inner');
-    document.querySelectorAll('.tab-inner-content').forEach(c => c.classList.remove('active'));
-    document.querySelectorAll('.tab-inner-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(target).classList.add('active');
-    btn.classList.add('active');
-  }));
-
-  // ========== MOBILE MENU ==========
-  const mobileBtn = document.getElementById('mobileMenuBtn');
-  const tabsCont = document.getElementById('tabsContainer');
-  if (mobileBtn) {
-    mobileBtn.addEventListener('click', () => tabsCont.classList.toggle('show'));
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => { if (window.innerWidth <= 768) tabsCont.classList.remove('show'); }));
-  }
+  if(askAi) askAi.addEventListener('click', askAI);
+  if(aiQuestion) aiQuestion.addEventListener('keypress', (e) => { if(e.key === 'Enter') askAI(); });
 
   // ========== LEVEL TEST ==========
   const levelQ = [
@@ -607,78 +506,7 @@
   renderLevelTest();
   document.querySelectorAll('.faq-item').forEach(item => item.addEventListener('click', () => item.classList.toggle('active')));
 
-  // ========== AI FLOATING ASSISTANT ==========
-  const aiBtn = document.getElementById('aiFloatingBtn');
-  const aiModal = document.getElementById('aiModal');
-  const closeAiModal = document.getElementById('closeAiModal');
-  const askBtn = document.getElementById('askAiBtn');
-  const aiQuestion = document.getElementById('aiQuestion');
-  const aiChatBody = document.getElementById('aiChatBody');
-
-  if (aiBtn) {
-    aiBtn.addEventListener('click', () => { aiModal.classList.toggle('active'); });
-  }
-  if (closeAiModal) {
-    closeAiModal.addEventListener('click', () => { aiModal.classList.remove('active'); });
-  }
-  async function askAI() {
-    const question = aiQuestion.value.trim();
-    if (!question) return;
-    const userMsg = document.createElement('p');
-    userMsg.innerHTML = `<strong>Você:</strong> ${question}`;
-    aiChatBody.appendChild(userMsg);
-    aiQuestion.value = '';
-    let answer = '';
-    if (question.split(' ').length === 1 && !question.includes('?')) {
-      try {
-        const resp = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${question}`);
-        if (resp.ok) {
-          const data = await resp.json();
-          const def = data[0]?.meanings[0]?.definitions[0]?.definition || 'Definição não encontrada.';
-          answer = `📖 Definição de "${question}": ${def}`;
-        } else {
-          answer = `Desculpe, não encontrei a palavra "${question}". Tente o dicionário na aba IA Tools.`;
-        }
-      } catch(e) {
-        answer = `Erro ao buscar definição. Tente novamente.`;
-      }
-    } else {
-      try {
-        const resp = await fetch('https://api.languagetool.org/v2/check', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({ text: question, language: 'en-US' })
-        });
-        const data = await resp.json();
-        if (data.matches && data.matches.length > 0) {
-          answer = `📝 Sugestões gramaticais:<br>`;
-          data.matches.slice(0, 2).forEach(m => {
-            answer += `- ${m.message}<br>`;
-          });
-        } else {
-          answer = `✅ Sua frase parece correta gramaticalmente!`;
-        }
-      } catch(e) {
-        answer = `Desculpe, não pude verificar a gramática agora. Use a ferramenta "Gramática" na aba IA Tools.`;
-      }
-    }
-    const botMsg = document.createElement('p');
-    botMsg.innerHTML = `<strong>Assistente:</strong> ${answer}`;
-    aiChatBody.appendChild(botMsg);
-    aiChatBody.scrollTop = aiChatBody.scrollHeight;
-  }
-  if (askBtn) {
-    askBtn.addEventListener('click', askAI);
-    aiQuestion.addEventListener('keypress', (e) => { if (e.key === 'Enter') askAI(); });
-  }
-
-  // Garantir que a aba inicial está correta
-  if (document.getElementById('alunos').classList.contains('active')) {
-    showLoginForm();
-  } else {
-    activateTab('home');
-  }
+  if(document.getElementById('alunos').classList.contains('active')) checkAlunosSession();
 </script>
 </body>
 </html>
-</script>});
