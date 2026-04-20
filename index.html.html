@@ -61,14 +61,53 @@
     .small-speak:hover { background: #F1F5F9; color: #D35400; }
     .progress-bar { background: #E2E8F0; border-radius: 20px; height: 12px; overflow: hidden; margin: 8px 0; }
     .progress-fill { width: 0%; background: linear-gradient(90deg, #E67E22, #F39C12); height: 100%; border-radius: 20px; transition: width 0.3s; }
-    .ai-help-btn { position: fixed; bottom: 100px; right: 24px; background: #1E3A5F; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 98; transition: 0.2s; }
-    .ai-help-btn:hover { transform: scale(1.05); background: #E67E22; }
-    .ai-modal { display: none; position: fixed; bottom: 170px; right: 30px; width: 320px; background: white; border-radius: 20px; box-shadow: 0 20px 35px rgba(0,0,0,0.2); z-index: 99; overflow: hidden; }
-    .ai-modal.active { display: block; }
-    .ai-modal-header { background: #1E3A5F; color: white; padding: 12px 16px; font-weight: bold; display: flex; justify-content: space-between; }
-    .ai-modal-body { padding: 16px; max-height: 400px; overflow-y: auto; font-size: 0.9rem; }
-    .ai-modal-footer { padding: 12px; border-top: 1px solid #E2E8F0; display: flex; gap: 8px; }
-    .ai-modal-footer input { flex: 1; margin: 0; }
+    /* IA moderno */
+    .ai-help-btn {
+      position: fixed; bottom: 100px; right: 24px;
+      background: linear-gradient(135deg, #1E3A5F, #2B5A8C);
+      color: white; width: 60px; height: 60px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      z-index: 98; transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+    .ai-help-btn:hover { transform: scale(1.1); background: linear-gradient(135deg, #E67E22, #D35400); }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(30,58,95,0.4); } 70% { box-shadow: 0 0 0 12px rgba(30,58,95,0); } 100% { box-shadow: 0 0 0 0 rgba(30,58,95,0); } }
+    .ai-modal {
+      display: none; position: fixed; bottom: 180px; right: 30px;
+      width: 400px; max-width: 90vw; background: white; border-radius: 28px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); z-index: 99;
+      overflow: hidden; border: 1px solid rgba(0,0,0,0.05);
+    }
+    .ai-modal.active { display: block; animation: slideUp 0.2s ease; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .ai-modal-header {
+      background: linear-gradient(135deg, #1E3A5F, #2B5A8C);
+      color: white; padding: 14px 18px; font-weight: bold;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .ai-modal-body {
+      padding: 16px; max-height: 450px; overflow-y: auto;
+      background: #F8FAFE; display: flex; flex-direction: column; gap: 12px;
+    }
+    .chat-bubble-user {
+      align-self: flex-end; background: linear-gradient(135deg, #E67E22, #D35400);
+      color: white; padding: 10px 14px; border-radius: 20px 20px 4px 20px;
+      max-width: 85%; word-wrap: break-word; font-size: 0.9rem;
+    }
+    .chat-bubble-ai {
+      align-self: flex-start; background: white; border: 1px solid #E2E8F0;
+      padding: 10px 14px; border-radius: 20px 20px 20px 4px;
+      max-width: 85%; word-wrap: break-word; font-size: 0.9rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .ai-modal-footer {
+      padding: 12px; border-top: 1px solid #E2E8F0;
+      display: flex; gap: 8px; background: white;
+    }
+    .ai-modal-footer input { flex: 1; margin: 0; background: #F1F5F9; border: none; }
+    .clear-chat-btn { background: #64748B; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; transition: 0.2s; }
+    .clear-chat-btn:hover { background: #475569; }
     @media (max-width: 768px) {
       .mobile-menu-icon { display: block; }
       .tabs { display: none; flex-direction: column; width: 100%; background: white; position: absolute; top: 70px; left: 0; z-index: 1000; box-shadow: 0 8px 24px rgba(0,0,0,0.1); border-radius: 0 0 20px 20px; }
@@ -77,7 +116,7 @@
       .grid-3 { grid-template-columns: 1fr; }
       .hero-custom h1 { font-size: 2rem; }
       .alunos-bg { padding: 24px; }
-      .ai-modal { width: 280px; right: 10px; bottom: 160px; }
+      .ai-modal { width: 90vw; right: 5vw; bottom: 170px; }
     }
   </style>
 </head>
@@ -109,7 +148,7 @@
   </div>
 
   <!-- HOW IT WORKS -->
-  <div id="howitworks" class="tab-content"><h2>How It Works</h2><div class="grid-3"><div class="card"><i class="fas fa-pen"></i><h3>1. Level Test</h3><p>20 questions online. Receive result by email.</p></div><div class="card"><i class="fas fa-video"></i><h3>2. Live Classes</h3><p>Google Meet, real interaction.</p></div><div class="card"><i class="fab fa-whatsapp"></i><h3>3. Daily Practice</h3><p>Audio tasks, vocabulary lists, feedback.</p></div></div><div style="margin-top:40px; overflow-x:auto;"><h3>Weekly Schedule (Mozambique time)</h3><table style="width:100%; background:white; border-radius:20px;"><thead><tr><th>Day</th><th>Activity</th></tr></thead><tbody><tr><td>Monday</td><td>Beginner live class (8‑9 PM)</td></tr>乳</tbody></table></div></div>
+  <div id="howitworks" class="tab-content"><h2>How It Works</h2><div class="grid-3"><div class="card"><i class="fas fa-pen"></i><h3>1. Level Test</h3><p>20 questions online. Receive result by email.</p></div><div class="card"><i class="fas fa-video"></i><h3>2. Live Classes</h3><p>Google Meet, real interaction.</p></div><div class="card"><i class="fab fa-whatsapp"></i><h3>3. Daily Practice</h3><p>Audio tasks, vocabulary lists, feedback.</p></div></div><div style="margin-top:40px; overflow-x:auto;"><h3>Weekly Schedule (Mozambique time)</h3><table style="width:100%; background:white; border-radius:20px;"><thead><tr><th>Day</th><th>Activity</th></tr></thead><tbody><tr><td>Monday</td><td>Beginner live class (8‑9 PM)</td>}</tbody></table></div></div>
 
   <!-- LEVELS -->
   <div id="levels" class="tab-content"><h2>Levels & Content</h2><div class="grid-3"><div class="card"><i class="fas fa-star"></i><h3>Beginner (A1‑A2)</h3><p>Present simple, there is/are, can/can’t, should. Vocabulary: routines, food, work, family.</p></div><div class="card"><i class="fas fa-chart-line"></i><h3>Intermediate (B1‑B2)</h3><p>Past vs present perfect, used to, conditionals, although/despite. Topics: travel, technology, mental health.</p></div><div class="card"><i class="fas fa-calendar-alt"></i><h3>Weekly Themes</h3><p>Routines · Food · Work · Travel · Family · Technology · Health · Music · Cinema · more.</p></div></div></div>
@@ -151,65 +190,77 @@
 
         <!-- Semana Atual -->
         <div id="semanaAtual" class="tab-inner-content active">
-          <div class="grid-3">
-            <div class="card"><h3><i class="fas fa-file-pdf"></i> Vocabulary</h3><a href="#" class="btn" target="_blank">📥 Beginner PDF</a><a href="#" class="btn btn-outline" target="_blank">📥 Intermediate PDF</a></div>
-            <div class="card"><h3><i class="fas fa-headphones"></i> Shadowing Audio</h3><audio controls src="#"></audio></div>
-            <div class="card"><h3><i class="fas fa-image"></i> Picture of the week</h3><img src="#" style="width:100%; border-radius:16px;"></div>
-          </div>
-          <div class="card"><h3><i class="fas fa-comment-dots"></i> Speaking Challenge</h3><p>Record a 1‑minute audio about: <strong>"How did your week start? Describe your Monday morning routine."</strong></p><p>Send the audio on WhatsApp. You will receive personalized feedback.</p></div>
+          <div class="grid-3"><div class="card"><h3><i class="fas fa-file-pdf"></i> Vocabulary</h3><a href="#" class="btn" target="_blank">📥 Beginner PDF</a><a href="#" class="btn btn-outline" target="_blank">📥 Intermediate PDF</a></div><div class="card"><h3><i class="fas fa-headphones"></i> Shadowing Audio</h3><audio controls src="#"></audio></div><div class="card"><h3><i class="fas fa-image"></i> Picture of the week</h3><img src="#" style="width:100%; border-radius:16px;"></div></div>
+          <div class="card"><h3><i class="fas fa-comment-dots"></i> Speaking Challenge</h3><p>Record a 1‑minute audio about: <strong>"How did your week start?"</strong></p><p>Send on WhatsApp for feedback.</p></div>
         </div>
 
         <!-- Semanas Anteriores -->
-        <div id="semanasAnteriores" class="tab-inner-content">
-          <div class="grid-3"><div class="card"><h3><i class="fas fa-archive"></i> Week 1 - Routines</h3><a href="#" class="btn" target="_blank">📁 Access</a></div><div class="card"><h3><i class="fas fa-archive"></i> Week 2 - Food</h3><a href="#" class="btn" target="_blank">📁 Access</a></div><div class="card"><h3><i class="fas fa-archive"></i> Week 3 - Work</h3><a href="#" class="btn" target="_blank">📁 Access</a></div></div>
-        </div>
+        <div id="semanasAnteriores" class="tab-inner-content"><div class="grid-3"><div class="card"><h3><i class="fas fa-archive"></i> Week 1 - Routines</h3><a href="#" class="btn" target="_blank">📁 Access</a></div><div class="card"><h3><i class="fas fa-archive"></i> Week 2 - Food</h3><a href="#" class="btn" target="_blank">📁 Access</a></div><div class="card"><h3><i class="fas fa-archive"></i> Week 3 - Work</h3><a href="#" class="btn" target="_blank">📁 Access</a></div></div></div>
 
-        <!-- Practice Hub -->
+        <!-- Practice Hub (com IPA restaurado) -->
         <div id="practiceHub" class="tab-inner-content">
-          <h3><i class="fas fa-microphone-alt"></i> Practice Hub – Pronúncia</h3>
-          <div class="quiz-form" style="margin-bottom:32px;">
-            <h4>🔊 Leitor de pronúncia</h4>
-            <input type="text" id="textToSpeak" placeholder="Ex: schedule, comfortable, I would like a cup of tea">
-            <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap;">
-              <select id="voiceSelect" class="btn btn-outline" style="background:white; width:auto;"></select>
-              <button id="speakBtn" class="btn">Ouvir</button>
-            </div>
-          </div>
-          <div class="card">
-            <h4>🎧 Listening Challenge</h4>
-            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-              <button id="randomWordBtn" class="btn btn-outline">🎲 Nova palavra</button>
-              <button id="repeatWordBtn" class="btn btn-outline">🔁 Repetir</button>
-              <select id="speedSelect" class="btn btn-outline" style="width:auto;"><option value="0.5">0.5x</option><option value="0.75">0.75x</option><option value="1" selected>1x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option></select>
-            </div>
-            <input type="text" id="guessInput" placeholder="Escreva a palavra..." style="margin-top:12px;">
-            <button id="checkGuessBtn" class="btn" style="margin-top:8px;">Verificar</button>
-            <div id="guessResult" style="margin-top:12px;"></div>
+          <h3><i class="fas fa-microphone-alt"></i> Practice Hub – Pronúncia e IPA</h3>
+          <div class="quiz-form" style="margin-bottom:32px;"><h4>🔊 Leitor de pronúncia</h4><input type="text" id="textToSpeak" placeholder="Ex: schedule, comfortable"><div style="margin-top:16px;"><select id="voiceSelect" class="btn btn-outline" style="background:white;"></select><button id="speakBtn" class="btn">Ouvir</button></div></div>
+          <div class="grid-3">
+            <!-- Vogais IPA -->
+            <div class="card"><h4>Vogais</h4><div style="overflow-x:auto;"><table style="font-size:0.85rem;"><thead><tr><th>IPA</th><th>Palavra</th><th>Ouvir</th><th>Dica</th></tr></thead>
+            <tbody>
+              <tr><td>/iː/</td><td><strong>see</strong></td><td><button class="small-speak" data-word="see">🔊</button></td><td>"sí"</td></tr>
+              <tr><td>/ɪ/</td><td><strong>sit</strong></td><td><button class="small-speak" data-word="sit">🔊</button></td><td>"sît" curto</td></tr>
+              <tr><td>/eɪ/</td><td><strong>day</strong></td><td><button class="small-speak" data-word="day">🔊</button></td><td>"dêi"</td></tr>
+              <tr><td>/ɛ/</td><td><strong>bed</strong></td><td><button class="small-speak" data-word="bed">🔊</button></td><td>"béd"</td></tr>
+              <tr><td>/æ/</td><td><strong>cat</strong></td><td><button class="small-speak" data-word="cat">🔊</button></td><td>"kát" aberto</td></tr>
+              <tr><td>/ɑ/</td><td><strong>hot</strong></td><td><button class="small-speak" data-word="hot">🔊</button></td><td>"rát"</td></tr>
+              <tr><td>/ɔ/</td><td><strong>saw</strong></td><td><button class="small-speak" data-word="saw">🔊</button></td><td>"só"</td></tr>
+              <tr><td>/oʊ/</td><td><strong>go</strong></td><td><button class="small-speak" data-word="go">🔊</button></td><td>"gôu"</td></tr>
+              <tr><td>/ʊ/</td><td><strong>put</strong></td><td><button class="small-speak" data-word="put">🔊</button></td><td>"pût"</td></tr>
+              <tr><td>/u/</td><td><strong>too</strong></td><td><button class="small-speak" data-word="too">🔊</button></td><td>"tú"</td></tr>
+              <tr><td>/ʌ/</td><td><strong>cup</strong></td><td><button class="small-speak" data-word="cup">🔊</button></td><td>"câp"</td></tr>
+              <tr><td>/ɜr/</td><td><strong>bird</strong></td><td><button class="small-speak" data-word="bird">🔊</button></td><td>"bêrd"</td></tr>
+              <tr><td>/ər/</td><td><strong>teacher</strong></td><td><button class="small-speak" data-word="teacher">🔊</button></td><td>termina "âr"</td></tr>
+            </tbody></table></div></div>
+            <!-- Consoantes IPA -->
+            <div class="card"><h4>Consoantes</h4><div style="overflow-x:auto;"><table style="font-size:0.85rem;"><thead><tr><th>IPA</th><th>Palavra</th><th>Ouvir</th><th>Dica</th></tr></thead>
+            <tbody>
+              <tr><td>/p/</td><td><strong>pen</strong></td><td><button class="small-speak" data-word="pen">🔊</button></td><td>P português</td></tr>
+              <tr><td>/b/</td><td><strong>boy</strong></td><td><button class="small-speak" data-word="boy">🔊</button></td><td>B português</td></tr>
+              <tr><td>/t/</td><td><strong>tea</strong></td><td><button class="small-speak" data-word="tea">🔊</button></td><td>T aspirado</td></tr>
+              <tr><td>/d/</td><td><strong>dog</strong></td><td><button class="small-speak" data-word="dog">🔊</button></td><td>D suave</td></tr>
+              <tr><td>/k/</td><td><strong>cat</strong></td><td><button class="small-speak" data-word="cat">🔊</button></td><td>K aspirado</td></tr>
+              <tr><td>/g/</td><td><strong>go</strong></td><td><button class="small-speak" data-word="go">🔊</button></td><td>G suave</td></tr>
+              <tr><td>/f/</td><td><strong>fish</strong></td><td><button class="small-speak" data-word="fish">🔊</button></td><td>F normal</td></tr>
+              <tr><td>/v/</td><td><strong>voice</strong></td><td><button class="small-speak" data-word="voice">🔊</button></td><td>V vibrado</td></tr>
+              <tr><td>/θ/</td><td><strong>think</strong></td><td><button class="small-speak" data-word="think">🔊</button></td><td>"s" interdental</td></tr>
+              <tr><td>/ð/</td><td><strong>this</strong></td><td><button class="small-speak" data-word="this">🔊</button></td><td>"z" interdental</td></tr>
+              <tr><td>/s/</td><td><strong>see</strong></td><td><button class="small-speak" data-word="see">🔊</button></td><td>S seco</td></tr>
+              <tr><td>/z/</td><td><strong>zoo</strong></td><td><button class="small-speak" data-word="zoo">🔊</button></td><td>Z vibrado</td></tr>
+              <tr><td>/ʃ/</td><td><strong>she</strong></td><td><button class="small-speak" data-word="she">🔊</button></td><td>"ch" de chuva</td></tr>
+              <tr><td>/ʒ/</td><td><strong>vision</strong></td><td><button class="small-speak" data-word="vision">🔊</button></td><td>"j" de já</td></tr>
+              <tr><td>/h/</td><td><strong>he</strong></td><td><button class="small-speak" data-word="he">🔊</button></td><td>H aspirado</td></tr>
+              <tr><td>/m/</td><td><strong>me</strong></td><td><button class="small-speak" data-word="me">🔊</button></td><td>M normal</td></tr>
+              <tr><td>/n/</td><td><strong>no</strong></td><td><button class="small-speak" data-word="no">🔊</button></td><td>N normal</td></tr>
+              <tr><td>/ŋ/</td><td><strong>sing</strong></td><td><button class="small-speak" data-word="sing">🔊</button></td><td>"ng"</td></tr>
+              <tr><td>/l/</td><td><strong>light</strong></td><td><button class="small-speak" data-word="light">🔊</button></td><td>L claro</td></tr>
+              <tr><td>/r/</td><td><strong>red</strong></td><td><button class="small-speak" data-word="red">🔊</button></td><td>R enrolado</td></tr>
+              <tr><td>/w/</td><td><strong>we</strong></td><td><button class="small-speak" data-word="we">🔊</button></td><td>U semivogal</td></tr>
+              <tr><td>/j/</td><td><strong>yes</strong></td><td><button class="small-speak" data-word="yes">🔊</button></td><td>I semivogal</td></tr>
+            </tbody></table></div></div>
+            <!-- Listening Challenge -->
+            <div class="card"><h4>🎧 Listening Challenge</h4><div style="display:flex; gap:10px; flex-wrap:wrap;"><button id="randomWordBtn" class="btn btn-outline">🎲 Nova palavra</button><button id="repeatWordBtn" class="btn btn-outline">🔁 Repetir</button><select id="speedSelect" class="btn btn-outline"><option value="0.5">0.5x</option><option value="0.75">0.75x</option><option value="1" selected>1x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option></select></div><input type="text" id="guessInput" placeholder="Escreva a palavra..."><button id="checkGuessBtn" class="btn">Verificar</button><div id="guessResult"></div></div>
           </div>
         </div>
 
         <!-- Word Puzzle -->
         <div id="wordPuzzle" class="tab-inner-content">
-          <div class="card">
-            <h4>🧩 Word Puzzle Game</h4>
-            <p>Leia a dica em inglês e adivinhe a palavra. Clique na opção correta.</p>
-            <div id="puzzleArea">
-              <p id="puzzleHint" style="font-weight:bold; margin:20px 0; font-size:1.2rem; color:#1E3A5F;"></p>
-              <div id="puzzleWordDisplay" style="font-size:2rem; letter-spacing:10px; font-family:monospace; margin:20px 0; text-align:center;"></div>
-              <div id="puzzleOptions" style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center; margin:20px 0;"></div>
-              <button id="nextPuzzleBtn" class="btn btn-outline" style="display:none;">🎲 Próximo desafio</button>
-              <p id="puzzleScore" style="margin-top:20px; font-weight:bold;">🏆 Pontuação: 0</p>
-              <div id="puzzleFeedback" style="margin-top:16px;"></div>
-            </div>
-          </div>
+          <div class="card"><h4>🧩 Word Puzzle Game</h4><p>Leia a dica e adivinhe a palavra.</p><div id="puzzleArea"><p id="puzzleHint" style="font-weight:bold;"></p><div id="puzzleWordDisplay" style="font-size:2rem; letter-spacing:10px; font-family:monospace;"></div><div id="puzzleOptions" style="display:flex; gap:10px; flex-wrap:wrap;"></div><button id="nextPuzzleBtn" class="btn btn-outline" style="display:none;">🎲 Próximo desafio</button><p id="puzzleScore" style="margin-top:20px;">🏆 Pontuação: 0</p><div id="puzzleFeedback"></div></div></div>
         </div>
 
-        <!-- AI Tools (Dicionário + Gramática) -->
+        <!-- AI Tools -->
         <div id="aiTools" class="tab-inner-content">
           <div class="grid-3">
             <div class="card"><h3><i class="fas fa-book"></i> Dicionário</h3><input type="text" id="dictWord" placeholder="Digite uma palavra em inglês..."><button id="searchDictBtn" class="btn">Pesquisar</button><div id="dictResult" style="margin-top:12px;"></div><div id="dictAudio"></div></div>
-            <div class="card"><h3><i class="fas fa-spell-check"></i> Gramática</h3><textarea id="grammarText" rows="4" placeholder="Digite uma frase em inglês para verificar a gramática..."></textarea><button id="checkGrammarBtn" class="btn">Verificar</button><div id="grammarResult" style="margin-top:12px;"></div></div>
-            <div class="card"><h3><i class="fas fa-chart-line"></i> Progresso</h3><p>Pontuação no Word Puzzle: <span id="progressScore">0</span></p><div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div><p id="nextBadgeMsg" style="margin-top:8px;"></p><div id="badgesList"></div></div>
+            <div class="card"><h3><i class="fas fa-spell-check"></i> Gramática</h3><textarea id="grammarText" rows="4" placeholder="Digite uma frase em inglês..."></textarea><button id="checkGrammarBtn" class="btn">Verificar</button><div id="grammarResult" style="margin-top:12px;"></div></div>
+            <div class="card"><h3><i class="fas fa-chart-line"></i> Progresso</h3><p>Pontuação: <span id="progressScore">0</span></p><div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div><p id="nextBadgeMsg"></p><div id="badgesList"></div></div>
           </div>
         </div>
 
@@ -217,7 +268,7 @@
         <div id="bonus" class="tab-inner-content"><div class="grid-3"><div class="card"><h3><i class="fas fa-download"></i> 50 Useful Phrases</h3><a href="#" class="btn" target="_blank">📘 PDF</a></div><div class="card"><h3><i class="fas fa-microphone-alt"></i> Essential Dialogues</h3><audio controls src="#"></audio></div><div class="card"><h3><i class="fas fa-language"></i> Phrasal Verbs List</h3><a href="#" class="btn" target="_blank">📄 PDF</a></div></div></div>
 
         <!-- Conquistas -->
-        <div id="conquistas" class="tab-inner-content"><div class="grid-3"><div class="card"><h3><i class="fas fa-medal"></i> Badges</h3><div id="badgesContainer"></div></div><div class="card"><h3><i class="fas fa-trophy"></i> Honor Board</h3><p>Most active students on WhatsApp:</p><ul><li>🏅 Ana – 12 audios</li><li>🏅 Carlos – 9 audios</li></ul></div><div class="card"><h3><i class="fas fa-certificate"></i> Final Certificate</h3><p>After 3 months, request your certificate on WhatsApp.</p><a href="#" class="btn">Request</a></div></div></div>
+        <div id="conquistas" class="tab-inner-content"><div class="grid-3"><div class="card"><h3><i class="fas fa-medal"></i> Badges</h3><div id="badgesContainer"></div></div><div class="card"><h3><i class="fas fa-trophy"></i> Honor Board</h3><p>Ana – 12 audios<br>Carlos – 9 audios</p></div><div class="card"><h3><i class="fas fa-certificate"></i> Certificate</h3><p>Request after 3 months.</p><a href="#" class="btn">Request</a></div></div></div>
         <button class="btn" id="logoutBtnAlunos" style="background:#64748B; margin-top:32px;">Sair</button>
       </div>
     </div>
@@ -227,13 +278,14 @@
 <footer><div class="container"><p>© 2025 Augusto Júnior & Laurindo Josine – English Online</p><p>📞 Augusto: +258 84 877 6954 | Laurindo: +258 84 961 5913</p></div></footer>
 <a href="https://wa.me/258848776954?text=I%20WANT%20TO%20SPEAK%20ENGLISH" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
-<!-- Botão flutuante de IA (aparece apenas dentro da área do aluno) -->
+<!-- ======================= BOTÃO FLUTUANTE IA ======================= -->
 <div id="aiFloatingBtn" class="ai-help-btn" style="display:none;"><i class="fas fa-robot"></i></div>
 <div id="aiModal" class="ai-modal">
-  <div class="ai-modal-header">Assistente IA <i class="fas fa-times" style="cursor:pointer;" id="closeAiModal"></i></div>
-  <div class="ai-modal-body" id="aiChatBody">
-    <p>Olá! Sou o assistente de inglês. Pode perguntar sobre gramática, vocabulário ou traduções.</p>
+  <div class="ai-modal-header">
+    <span>🤖 Assistente IA</span>
+    <div><span class="clear-chat-btn" id="clearChatBtn">Limpar chat</span> <i class="fas fa-times" style="cursor:pointer; margin-left:12px;" id="closeAiModal"></i></div>
   </div>
+  <div class="ai-modal-body" id="aiChatBody"></div>
   <div class="ai-modal-footer">
     <input type="text" id="aiQuestion" placeholder="Digite sua pergunta...">
     <button id="askAiBtn" class="btn">Enviar</button>
@@ -263,7 +315,7 @@
     document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => { if(window.innerWidth <= 768) tabsCont.classList.remove('show'); }));
   }
 
-  // ========== ÁREA DO ALUNO ==========
+  // ========== ÁREA DO ALUNO (PALAVRA‑PASSE FIXA) ==========
   const VALID_PASSWORDS = ["Beginner1", "Intermediate2"];
   const loginArea = document.getElementById('alunosLoginArea');
   const materiaisDiv = document.getElementById('alunosMateriaisArea');
@@ -375,18 +427,31 @@
   function nextPuzzle() { if(!puzzleAnswered) { document.getElementById('puzzleFeedback').innerHTML = '<span style="color:orange;">⚠️ Answer first.</span>'; return; } currentPuzzleIndex++; displayPuzzle(); }
   function initWordPuzzle() { shuffledPuzzles = shuffleArray([...wordPuzzles]); currentPuzzleIndex = 0; puzzleScore = 0; puzzleAnswered = false; document.getElementById('puzzleScore').innerHTML = '🏆 Pontuação: 0'; displayPuzzle(); const nextBtn = document.getElementById('nextPuzzleBtn'); if(nextBtn && !nextBtn.hasListener) { nextBtn.hasListener = true; nextBtn.addEventListener('click', nextPuzzle); } }
 
-  // ========== PROGRESS & BADGES ==========
+  // ========== PROGRESS & BADGES (localStorage) ==========
   function saveProgress() { localStorage.setItem('puzzleScore', puzzleScore); localStorage.setItem('puzzleIndex', currentPuzzleIndex); }
-  function loadSavedProgress() { const savedScore = localStorage.getItem('puzzleScore'); if(savedScore !== null) puzzleScore = parseInt(savedScore); else puzzleScore = 0; const savedIndex = localStorage.getItem('puzzleIndex'); if(savedIndex !== null) currentPuzzleIndex = parseInt(savedIndex); else currentPuzzleIndex = 0; document.getElementById('puzzleScore').innerHTML = `🏆 Pontuação: ${puzzleScore}`; updateProgressDisplay(); }
-  function getBadges(score) { let b=[]; if(score>=100) b.push('🥉 100 pontos'); if(score>=500) b.push('🥈 500 pontos'); if(score>=1000) b.push('🥇 1000 pontos'); return b; }
+  function loadSavedProgress() { 
+    const savedScore = localStorage.getItem('puzzleScore'); 
+    if(savedScore !== null) puzzleScore = parseInt(savedScore); 
+    else puzzleScore = 0; 
+    const savedIndex = localStorage.getItem('puzzleIndex'); 
+    if(savedIndex !== null) currentPuzzleIndex = parseInt(savedIndex); 
+    else currentPuzzleIndex = 0; 
+    document.getElementById('puzzleScore').innerHTML = `🏆 Pontuação: ${puzzleScore}`; 
+    updateProgressDisplay(); 
+  }
   function updateProgressDisplay() {
-    const score = puzzleScore;
-    document.getElementById('progressScore').innerText = score;
-    let next = ''; if(score<100) next = `Faltam ${100-score} para 🥉`; else if(score<500) next = `Faltam ${500-score} para 🥈`; else if(score<1000) next = `Faltam ${1000-score} para 🥇`; else next = '🎉 Todas as medalhas!';
+    document.getElementById('progressScore').innerText = puzzleScore;
+    let next = '';
+    if(puzzleScore < 100) next = `Faltam ${100-puzzleScore} para 🥉`;
+    else if(puzzleScore < 500) next = `Faltam ${500-puzzleScore} para 🥈`;
+    else if(puzzleScore < 1000) next = `Faltam ${1000-puzzleScore} para 🥇`;
+    else next = '🎉 Todas as medalhas!';
     document.getElementById('nextBadgeMsg').innerText = next;
-    const percent = Math.min((score/1000)*100,100);
-    document.getElementById('progressFill').style.width = `${percent}%`;
-    const badges = getBadges(score);
+    document.getElementById('progressFill').style.width = `${Math.min((puzzleScore/1000)*100,100)}%`;
+    let badges = [];
+    if(puzzleScore >= 100) badges.push('🥉 100 pontos');
+    if(puzzleScore >= 500) badges.push('🥈 500 pontos');
+    if(puzzleScore >= 1000) badges.push('🥇 1000 pontos');
     const bc = document.getElementById('badgesContainer');
     if(bc) bc.innerHTML = badges.map(b => `<p>${b}</p>`).join('');
   }
@@ -419,10 +484,18 @@
       const resp = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
       if(!resp.ok) throw new Error('Palavra não encontrada');
       const data = await resp.json();
-      const def = data[0]?.meanings[0]?.definitions[0]?.definition || 'Definição não disponível.';
-      const phonetic = data[0]?.phonetic || '';
-      const audioUrl = data[0]?.phonetics?.find(p => p.audio)?.audio;
-      resultDiv.innerHTML = `<p><strong>${word}</strong> ${phonetic ? `(${phonetic})` : ''}</p><p>${def}</p>`;
+      const entry = data[0];
+      let html = `<p><strong>${entry.word}</strong> ${entry.phonetic ? `(${entry.phonetic})` : ''}</p>`;
+      entry.meanings.forEach(meaning => {
+        html += `<p><em>${meaning.partOfSpeech}</em>: ${meaning.definitions[0]?.definition || ''}</p>`;
+        if(meaning.definitions[0]?.example) html += `<p>📘 Exemplo: "${meaning.definitions[0].example}"</p>`;
+        const synonyms = meaning.definitions[0]?.synonyms || [];
+        if(synonyms.length) html += `<p>🔁 Sinónimos: ${synonyms.slice(0,5).join(', ')}</p>`;
+        const antonyms = meaning.definitions[0]?.antonyms || [];
+        if(antonyms.length) html += `<p>🔁 Antónimos: ${antonyms.slice(0,5).join(', ')}</p>`;
+      });
+      resultDiv.innerHTML = html;
+      const audioUrl = entry.phonetics?.find(p => p.audio)?.audio;
       if(audioUrl) {
         const audio = new Audio(audioUrl);
         const btn = document.createElement('button');
@@ -442,55 +515,99 @@
   async function checkGrammar() {
     const text = document.getElementById('grammarText').value.trim();
     if(!text) return;
-    const resultDiv = document.getElementById('grammarResult');
-    resultDiv.innerHTML = '<p>Analisando...</p>';
+    const resDiv = document.getElementById('grammarResult');
+    resDiv.innerHTML = '<p>Analisando...</p>';
     try {
       const resp = await fetch('https://api.languagetool.org/v2/check', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ text: text, language: 'en-US' }) });
       const data = await resp.json();
       if(data.matches && data.matches.length) {
         let html = '<p><strong>Sugestões:</strong></p><ul>';
         data.matches.forEach(m => { const rep = m.replacements[0]?.value || ''; html += `<li><strong>${m.message}</strong><br>Original: "${m.context.text.substring(m.context.offset, m.context.offset + m.context.length)}"<br>Sugestão: ${rep}</li>`; });
-        html += '</ul>'; resultDiv.innerHTML = html;
-      } else { resultDiv.innerHTML = '<p style="color:green;">✅ Nenhum erro gramatical encontrado.</p>'; }
-    } catch(e) { resultDiv.innerHTML = `<p style="color:red;">Erro: ${e.message}</p>`; }
+        html += '</ul>'; resDiv.innerHTML = html;
+      } else { resDiv.innerHTML = '<p style="color:green;">✅ Nenhum erro gramatical encontrado.</p>'; }
+    } catch(e) { resDiv.innerHTML = `<p style="color:red;">Erro: ${e.message}</p>`; }
   }
   document.getElementById('searchDictBtn')?.addEventListener('click', searchDictionary);
   document.getElementById('checkGrammarBtn')?.addEventListener('click', checkGrammar);
 
-  // ========== AI FLOATING ASSISTANT ==========
+  // ========== ASSISTENTE IA ==========
   const aiBtn = document.getElementById('aiFloatingBtn');
   const aiModal = document.getElementById('aiModal');
   const closeAi = document.getElementById('closeAiModal');
-  const askAi = document.getElementById('askAiBtn');
+  const askBtn = document.getElementById('askAiBtn');
   const aiQuestion = document.getElementById('aiQuestion');
-  const aiChat = document.getElementById('aiChatBody');
+  const aiChatBody = document.getElementById('aiChatBody');
+  const clearChat = document.getElementById('clearChatBtn');
+
+  function addMessage(role, content) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = role === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai';
+    msgDiv.innerHTML = role === 'user' ? content : content;
+    aiChatBody.appendChild(msgDiv);
+    aiChatBody.scrollTop = aiChatBody.scrollHeight;
+  }
+
+  function clearChatHistory() {
+    aiChatBody.innerHTML = '';
+    addMessage('ai', 'Olá! Sou o assistente de inglês. Pode perguntar sobre:<br><ul><li>📖 Vocabulário (definição, sinónimos, antónimos)</li><li>✍️ Correção de frases</li><li>💬 Tradução</li><li>📝 Exemplos de uso</li></ul>');
+  }
+  if(clearChat) clearChat.addEventListener('click', clearChatHistory);
   if(aiBtn) aiBtn.addEventListener('click', () => aiModal.classList.toggle('active'));
   if(closeAi) closeAi.addEventListener('click', () => aiModal.classList.remove('active'));
+
   async function askAI() {
     const q = aiQuestion.value.trim();
     if(!q) return;
-    const userMsg = document.createElement('p'); userMsg.innerHTML = `<strong>Você:</strong> ${q}`; aiChat.appendChild(userMsg);
+    addMessage('user', q);
     aiQuestion.value = '';
-    let ans = '';
-    if(q.split(' ').length === 1 && !q.includes('?')) {
+    let answer = '';
+    const isTranslation = /traduzir?|translate|como se diz|como dizer/.test(q.toLowerCase());
+    if(isTranslation) {
+      let text = q.replace(/traduzir?|translate|como se diz|como dizer/gi, '').replace(/[?.,!]/g, '').trim();
+      if(text) {
+        try {
+          const resp = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|pt`);
+          const data = await resp.json();
+          answer = `📝 Tradução de "${text}":<br><strong>${data.responseData.translatedText}</strong><br><br>🔍 Quer exemplos?`;
+        } catch(e) { answer = `Desculpe, não consegui traduzir agora.`; }
+      } else { answer = `Por favor, indique a palavra/frase para traduzir.`; }
+    } else if(q.split(' ').length <= 5 && !q.includes('?')) {
       try {
         const resp = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${q}`);
-        if(resp.ok) { const data = await resp.json(); const def = data[0]?.meanings[0]?.definitions[0]?.definition || 'Definição não encontrada.'; ans = `📖 Definição de "${q}": ${def}`; }
-        else { ans = `Desculpe, não encontrei a palavra "${q}".`; }
-      } catch(e) { ans = `Erro ao buscar definição.`; }
+        if(resp.ok) {
+          const data = await resp.json();
+          const entry = data[0];
+          let def = `<strong>${entry.word}</strong> ${entry.phonetic || ''}<br>`;
+          entry.meanings.slice(0,2).forEach(m => {
+            def += `<br><em>${m.partOfSpeech}</em>: ${m.definitions[0]?.definition || ''}`;
+            if(m.definitions[0]?.example) def += `<br>📘 Ex: "${m.definitions[0].example}"`;
+            const synonyms = m.definitions[0]?.synonyms || [];
+            if(synonyms.length) def += `<br>🔁 Sinónimos: ${synonyms.slice(0,3).join(', ')}`;
+          });
+          answer = `📖 Definição:<br>${def}`;
+        } else { answer = `Não encontrei a palavra "${q}".`; }
+      } catch(e) { answer = `Erro ao buscar definição.`; }
     } else {
       try {
         const resp = await fetch('https://api.languagetool.org/v2/check', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ text: q, language: 'en-US' }) });
         const data = await resp.json();
-        if(data.matches && data.matches.length) { ans = `📝 Sugestões gramaticais:<br>`; data.matches.slice(0,2).forEach(m => { ans += `- ${m.message}<br>`; }); }
-        else { ans = `✅ Sua frase parece correta gramaticalmente!`; }
-      } catch(e) { ans = `Desculpe, não pude verificar a gramática agora.`; }
+        if(data.matches && data.matches.length) {
+          answer = `✍️ <strong>Análise gramatical:</strong><br>`;
+          data.matches.forEach((m,idx) => {
+            const rep = m.replacements[0]?.value || '';
+            answer += `<br><strong>${idx+1}. ${m.message}</strong><br>Original: "${m.context.text.substring(m.context.offset, m.context.offset + m.context.length)}"<br>Sugestão: ${rep}`;
+          });
+          let corrected = q;
+          data.matches.forEach(m => { if(m.replacements[0]?.value) corrected = corrected.replace(m.context.text.substring(m.context.offset, m.context.offset + m.context.length), m.replacements[0].value); });
+          answer += `<br><br>📝 <strong>Frase corrigida:</strong> "${corrected}"`;
+        } else { answer = `✅ Sua frase parece gramaticalmente correta!`; }
+      } catch(e) { answer = `Desculpe, não pude verificar a gramática agora.`; }
     }
-    const botMsg = document.createElement('p'); botMsg.innerHTML = `<strong>Assistente:</strong> ${ans}`; aiChat.appendChild(botMsg);
-    aiChat.scrollTop = aiChat.scrollHeight;
+    addMessage('ai', answer);
   }
-  if(askAi) askAi.addEventListener('click', askAI);
+  if(askBtn) askBtn.addEventListener('click', askAI);
   if(aiQuestion) aiQuestion.addEventListener('keypress', (e) => { if(e.key === 'Enter') askAI(); });
+  clearChatHistory();
 
   // ========== LEVEL TEST ==========
   const levelQ = [
