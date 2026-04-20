@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>Augusto & Laurindo | Inglês Online</title>
-  <!-- Fontes elegantes -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -15,20 +14,19 @@
       box-sizing: border-box;
     }
     :root {
-      --bg: #F8F9FC;
+      --bg: rgba(248, 249, 252, 0.92);
       --card: #FFFFFF;
       --text: #1A2C3E;
       --text-light: #4A627A;
       --border: #E9EDF2;
       --accent: #C49A6C;
       --accent-dark: #A67C4A;
-      --accent-light: #E8D5B5;
       --header-bg: rgba(255,255,255,0.96);
       --shadow: 0 20px 35px -12px rgba(0,0,0,0.08);
       --gradient: linear-gradient(135deg, #1E3A5F 0%, #2C5282 100%);
     }
     body.dark {
-      --bg: #111827;
+      --bg: rgba(17, 24, 39, 0.94);
       --card: #1F2937;
       --text: #F3F4F6;
       --text-light: #9CA3AF;
@@ -38,7 +36,7 @@
       --header-bg: rgba(17,24,39,0.96);
     }
     body.high-contrast {
-      --bg: #000000;
+      --bg: rgba(0, 0, 0, 0.98);
       --card: #111111;
       --text: #FFFFFF;
       --text-light: #EEEEEE;
@@ -52,6 +50,29 @@
       color: var(--text);
       transition: background 0.3s, color 0.2s;
       line-height: 1.5;
+      position: relative;
+    }
+    /* Fundo artístico com mulher de cabelos cacheados, café, livros, laptop */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://images.pexels.com/photos/4348401/pexels-photo-4348401.jpeg?auto=compress&cs=tinysrgb&w=1600') center/cover no-repeat;
+      filter: brightness(0.85) contrast(1.05);
+      z-index: -2;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      z-index: -1;
     }
     h1, h2, h3, .logo, .tab-btn, .btn, .flashcard-front h3 {
       font-family: 'Playfair Display', serif;
@@ -75,8 +96,6 @@
       justify-content: space-between;
       align-items: center;
       padding: 16px 0;
-      flex-wrap: wrap;
-      gap: 16px;
     }
     .logo {
       font-size: 1.8rem;
@@ -91,28 +110,40 @@
       color: var(--accent);
       background: none;
     }
-    .icon-btn {
+    .mobile-menu-icon {
       background: transparent;
       border: 1px solid var(--border);
       border-radius: 40px;
-      padding: 8px 14px;
+      padding: 8px 16px;
       cursor: pointer;
       color: var(--text);
-      font-weight: 500;
-      transition: all 0.2s;
+      font-size: 1.2rem;
+      transition: 0.2s;
     }
-    .icon-btn:hover {
+    .mobile-menu-icon:hover {
       background: var(--accent);
       color: white;
-      border-color: var(--accent);
+    }
+    /* Menu colapsável (abas + controlos) */
+    .menu-panel {
+      display: none;
+      flex-direction: column;
+      background: var(--header-bg);
+      backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 16px;
+      margin-top: 12px;
+      margin-bottom: 16px;
+      gap: 12px;
+      border: 1px solid var(--border);
+    }
+    .menu-panel.show {
+      display: flex;
     }
     .tabs {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 12px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 8px;
+      gap: 8px;
     }
     .tab-btn {
       background: none;
@@ -129,6 +160,29 @@
       background: var(--accent);
       color: white;
       box-shadow: 0 4px 12px rgba(196,154,108,0.3);
+    }
+    .settings-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+    .icon-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 6px 14px;
+      cursor: pointer;
+      color: var(--text);
+      font-weight: 500;
+      transition: 0.2s;
+    }
+    .icon-btn:hover {
+      background: var(--accent);
+      color: white;
     }
     .tab-content {
       display: none;
@@ -328,7 +382,6 @@
       height: 100%;
       border-radius: 20px;
     }
-    /* Tabelas IPA */
     .ipa-table {
       width: 100%;
       border-collapse: collapse;
@@ -459,7 +512,6 @@
       font-size: 0.8rem;
     }
     @media (max-width: 768px) {
-      .tabs { justify-content: center; }
       .grid-3 { grid-template-columns: 1fr; }
       .flashcard { min-height: 220px; }
       .ai-modal { width: 90vw; right: 5vw; bottom: 160px; }
@@ -471,24 +523,26 @@
 <header>
   <div class="container header-flex">
     <div class="logo">Augusto & <span>Laurindo</span> English</div>
-    <div>
-      <button id="darkModeToggle" class="icon-btn">🌙 Escuro</button>
-      <button id="contrastToggle" class="icon-btn">👁️ Contraste</button>
-      <button id="fontPlus" class="icon-btn">A+</button>
-      <button id="fontMinus" class="icon-btn">A-</button>
-      <button id="mobileMenuBtn" class="icon-btn">☰ Menu</button>
-    </div>
+    <button class="mobile-menu-icon" id="mobileMenuBtn"><i class="fas fa-bars"></i> Menu</button>
   </div>
   <div class="container">
-    <div class="tabs" id="tabsContainer">
-      <button class="tab-btn active" data-tab="home">🏠 Home</button>
-      <button class="tab-btn" data-tab="howitworks">📖 How it works</button>
-      <button class="tab-btn" data-tab="levels">📊 Levels</button>
-      <button class="tab-btn" data-tab="pricing">💰 Pricing</button>
-      <button class="tab-btn" data-tab="test">📝 Level Test</button>
-      <button class="tab-btn" data-tab="contact">📞 Contact</button>
-      <button class="tab-btn" data-tab="alunos">🔒 Alunos</button>
-      <button class="tab-btn" data-tab="admin">👑 Admin</button>
+    <div class="menu-panel" id="menuPanel">
+      <div class="tabs" id="tabsContainer">
+        <button class="tab-btn active" data-tab="home">🏠 Home</button>
+        <button class="tab-btn" data-tab="howitworks">📖 How it works</button>
+        <button class="tab-btn" data-tab="levels">📊 Levels</button>
+        <button class="tab-btn" data-tab="pricing">💰 Pricing</button>
+        <button class="tab-btn" data-tab="test">📝 Level Test</button>
+        <button class="tab-btn" data-tab="contact">📞 Contact</button>
+        <button class="tab-btn" data-tab="alunos">🔒 Alunos</button>
+        <button class="tab-btn" data-tab="admin">👑 Admin</button>
+      </div>
+      <div class="settings-buttons">
+        <button id="darkModeToggle" class="icon-btn">🌙 Escuro</button>
+        <button id="contrastToggle" class="icon-btn">👁️ Contraste</button>
+        <button id="fontPlus" class="icon-btn">A+</button>
+        <button id="fontMinus" class="icon-btn">A-</button>
+      </div>
     </div>
   </div>
 </header>
@@ -604,52 +658,13 @@
       <div id="practiceHub" class="tab-inner-content">
         <div class="card"><h4>🔊 Leitor de pronúncia</h4><input type="text" id="textToSpeak" placeholder="Ex: schedule, comfortable"><select id="voiceSelect"></select><button id="speakBtn" class="btn">Ouvir</button></div>
         <div class="card"><h4>🎙️ Grave a sua voz</h4><button id="startRecordBtn" class="btn btn-outline">🎤 Gravar</button><button id="stopRecordBtn" class="btn btn-outline" style="display:none">⏹️ Parar</button><button id="playRecordBtn" class="btn btn-outline" style="display:none">🔊 Reproduzir</button><div id="recordStatus"></div></div>
-        <!-- Vogais IPA -->
         <div class="card"><h4>🔤 IPA - Vogais</h4>
           <table class="ipa-table"><thead><tr><th>IPA</th><th>Palavra</th><th>Ouvir</th><th>Dica</th></tr></thead>
-          <tbody>
-            <tr><td>/iː/</td><td>see</td><td><button class="small-speak" data-word="see">🔊</button></td><td>"sí"</td></tr>
-            <tr><td>/ɪ/</td><td>sit</td><td><button class="small-speak" data-word="sit">🔊</button></td><td>"sît" curto</td></tr>
-            <tr><td>/eɪ/</td><td>day</td><td><button class="small-speak" data-word="day">🔊</button></td><td>"dêi"</td></tr>
-            <tr><td>/ɛ/</td><td>bed</td><td><button class="small-speak" data-word="bed">🔊</button></td><td>"béd"</td></tr>
-            <tr><td>/æ/</td><td>cat</td><td><button class="small-speak" data-word="cat">🔊</button></td><td>"kát" aberto</td></tr>
-            <tr><td>/ɑ/</td><td>hot</td><td><button class="small-speak" data-word="hot">🔊</button></td><td>"rát"</td></tr>
-            <tr><td>/ɔ/</td><td>saw</td><td><button class="small-speak" data-word="saw">🔊</button></td><td>"só"</td></tr>
-            <tr><td>/oʊ/</td><td>go</td><td><button class="small-speak" data-word="go">🔊</button></td><td>"gôu"</td></tr>
-            <tr><td>/ʊ/</td><td>put</td><td><button class="small-speak" data-word="put">🔊</button></td><td>"pût"</td></tr>
-            <tr><td>/u/</td><td>too</td><td><button class="small-speak" data-word="too">🔊</button></td><td>"tú"</td></tr>
-            <tr><td>/ʌ/</td><td>cup</td><td><button class="small-speak" data-word="cup">🔊</button></td><td>"câp"</td></tr>
-            <tr><td>/ɜr/</td><td>bird</td><td><button class="small-speak" data-word="bird">🔊</button></td><td>"bêrd"</td></tr>
-            <tr><td>/ər/</td><td>teacher</td><td><button class="small-speak" data-word="teacher">🔊</button></td><td>termina "âr"</td></tr>
-          </tbody></table>
+          <tbody><tr><td>/iː/</td><td>see</td><td><button class="small-speak" data-word="see">🔊</button></td><td>"sí"</td></tr><tr><td>/ɪ/</td><td>sit</td><td><button class="small-speak" data-word="sit">🔊</button></td><td>"sît" curto</td></tr><tr><td>/eɪ/</td><td>day</td><td><button class="small-speak" data-word="day">🔊</button></td><td>"dêi"</td></tr><tr><td>/ɛ/</td><td>bed</td><td><button class="small-speak" data-word="bed">🔊</button></td><td>"béd"</td></tr><tr><td>/æ/</td><td>cat</td><td><button class="small-speak" data-word="cat">🔊</button></td><td>"kát" aberto</td></tr><tr><td>/ɑ/</td><td>hot</td><td><button class="small-speak" data-word="hot">🔊</button></td><td>"rát"</td></tr><tr><td>/ɔ/</td><td>saw</td><td><button class="small-speak" data-word="saw">🔊</button></td><td>"só"</td></tr><tr><td>/oʊ/</td><td>go</td><td><button class="small-speak" data-word="go">🔊</button></td><td>"gôu"</td></tr><tr><td>/ʊ/</td><td>put</td><td><button class="small-speak" data-word="put">🔊</button></td><td>"pût"</td></tr><tr><td>/u/</td><td>too</td><td><button class="small-speak" data-word="too">🔊</button></td><td>"tú"</td></tr><tr><td>/ʌ/</td><td>cup</td><td><button class="small-speak" data-word="cup">🔊</button></td><td>"câp"</td></tr><tr><td>/ɜr/</td><td>bird</td><td><button class="small-speak" data-word="bird">🔊</button></td><td>"bêrd"</td></tr><tr><td>/ər/</td><td>teacher</td><td><button class="small-speak" data-word="teacher">🔊</button></td><td>termina "âr"</td></tr></tbody></table>
         </div>
-        <!-- Consoantes IPA -->
         <div class="card"><h4>🔤 IPA - Consoantes</h4>
           <table class="ipa-table"><thead><tr><th>IPA</th><th>Palavra</th><th>Ouvir</th><th>Dica</th></tr></thead>
-          <tbody>
-            <tr><td>/p/</td><td>pen</td><td><button class="small-speak" data-word="pen">🔊</button></td><td>P português</td></tr>
-            <tr><td>/b/</td><td>boy</td><td><button class="small-speak" data-word="boy">🔊</button></td><td>B português</td></tr>
-            <tr><td>/t/</td><td>tea</td><td><button class="small-speak" data-word="tea">🔊</button></td><td>T aspirado</td></tr>
-            <tr><td>/d/</td><td>dog</td><td><button class="small-speak" data-word="dog">🔊</button></td><td>D suave</td></tr>
-            <tr><td>/k/</td><td>cat</td><td><button class="small-speak" data-word="cat">🔊</button></td><td>K aspirado</td></tr>
-            <tr><td>/g/</td><td>go</td><td><button class="small-speak" data-word="go">🔊</button></td><td>G suave</td></tr>
-            <tr><td>/f/</td><td>fish</td><td><button class="small-speak" data-word="fish">🔊</button></td><td>F normal</td></tr>
-            <tr><td>/v/</td><td>voice</td><td><button class="small-speak" data-word="voice">🔊</button></td><td>V vibrado</td></tr>
-            <tr><td>/θ/</td><td>think</td><td><button class="small-speak" data-word="think">🔊</button></td><td>"s" interdental</td></tr>
-            <tr><td>/ð/</td><td>this</td><td><button class="small-speak" data-word="this">🔊</button></td><td>"z" interdental</td></tr>
-            <tr><td>/s/</td><td>see</td><td><button class="small-speak" data-word="see">🔊</button></td><td>S seco</td></tr>
-            <tr><td>/z/</td><td>zoo</td><td><button class="small-speak" data-word="zoo">🔊</button></td><td>Z vibrado</td></tr>
-            <tr><td>/ʃ/</td><td>she</td><td><button class="small-speak" data-word="she">🔊</button></td><td>"ch" de chuva</td></tr>
-            <tr><td>/ʒ/</td><td>vision</td><td><button class="small-speak" data-word="vision">🔊</button></td><td>"j" de já</td></tr>
-            <tr><td>/h/</td><td>he</td><td><button class="small-speak" data-word="he">🔊</button></td><td>H aspirado</td></tr>
-            <tr><td>/m/</td><td>me</td><td><button class="small-speak" data-word="me">🔊</button></td><td>M normal</td></tr>
-            <tr><td>/n/</td><td>no</td><td><button class="small-speak" data-word="no">🔊</button></td><td>N normal</td></tr>
-            <tr><td>/ŋ/</td><td>sing</td><td><button class="small-speak" data-word="sing">🔊</button></td><td>"ng"</td></tr>
-            <tr><td>/l/</td><td>light</td><td><button class="small-speak" data-word="light">🔊</button></td><td>L claro</td></tr>
-            <tr><td>/r/</td><td>red</td><td><button class="small-speak" data-word="red">🔊</button></td><td>R enrolado</td></tr>
-            <tr><td>/w/</td><td>we</td><td><button class="small-speak" data-word="we">🔊</button></td><td>U semivogal</td></tr>
-            <tr><td>/j/</td><td>yes</td><td><button class="small-speak" data-word="yes">🔊</button></td><td>I semivogal</td></tr>
-          </tbody></table>
+          <tbody><tr><td>/p/</td><td>pen</td><td><button class="small-speak" data-word="pen">🔊</button></td><td>P português</td></tr><tr><td>/b/</td><td>boy</td><td><button class="small-speak" data-word="boy">🔊</button></td><td>B português</td></tr><tr><td>/t/</td><td>tea</td><td><button class="small-speak" data-word="tea">🔊</button></td><td>T aspirado</td></tr><tr><td>/d/</td><td>dog</td><td><button class="small-speak" data-word="dog">🔊</button></td><td>D suave</td></tr><tr><td>/k/</td><td>cat</td><td><button class="small-speak" data-word="cat">🔊</button></td><td>K aspirado</td></tr><tr><td>/g/</td><td>go</td><td><button class="small-speak" data-word="go">🔊</button></td><td>G suave</td></tr><tr><td>/f/</td><td>fish</td><td><button class="small-speak" data-word="fish">🔊</button></td><td>F normal</td></tr><tr><td>/v/</td><td>voice</td><td><button class="small-speak" data-word="voice">🔊</button></td><td>V vibrado</td></tr><tr><td>/θ/</td><td>think</td><td><button class="small-speak" data-word="think">🔊</button></td><td>"s" interdental</td></tr><tr><td>/ð/</td><td>this</td><td><button class="small-speak" data-word="this">🔊</button></td><td>"z" interdental</td></tr><tr><td>/s/</td><td>see</td><td><button class="small-speak" data-word="see">🔊</button></td><td>S seco</td></tr><tr><td>/z/</td><td>zoo</td><td><button class="small-speak" data-word="zoo">🔊</button></td><td>Z vibrado</td></tr><tr><td>/ʃ/</td><td>she</td><td><button class="small-speak" data-word="she">🔊</button></td><td>"ch" de chuva</td></tr><tr><td>/ʒ/</td><td>vision</td><td><button class="small-speak" data-word="vision">🔊</button></td><td>"j" de já</td></tr><tr><td>/h/</td><td>he</td><td><button class="small-speak" data-word="he">🔊</button></td><td>H aspirado</td></tr><tr><td>/m/</td><td>me</td><td><button class="small-speak" data-word="me">🔊</button></td><td>M normal</td></tr><tr><td>/n/</td><td>no</td><td><button class="small-speak" data-word="no">🔊</button></td><td>N normal</td></tr><tr><td>/ŋ/</td><td>sing</td><td><button class="small-speak" data-word="sing">🔊</button></td><td>"ng"</td></tr><tr><td>/l/</td><td>light</td><td><button class="small-speak" data-word="light">🔊</button></td><td>L claro</td></tr><tr><td>/r/</td><td>red</td><td><button class="small-speak" data-word="red">🔊</button></td><td>R enrolado</td></tr><tr><td>/w/</td><td>we</td><td><button class="small-speak" data-word="we">🔊</button></td><td>U semivogal</td></tr><tr><td>/j/</td><td>yes</td><td><button class="small-speak" data-word="yes">🔊</button></td><td>I semivogal</td></tr></tbody></table>
         </div>
         <div class="card"><h4>🎧 Listening Challenge</h4><button id="randomWordBtn" class="btn btn-outline">🎲 Nova palavra</button><button id="repeatWordBtn" class="btn btn-outline">🔁 Repetir</button><select id="speedSelect"><option value="0.5">0.5x</option><option value="1" selected>1x</option><option value="1.5">1.5x</option></select><input type="text" id="guessInput" placeholder="Escreva a palavra"><button id="checkGuessBtn" class="btn">Verificar</button><div id="guessResult"></div></div>
       </div>
@@ -674,7 +689,7 @@
           <h3>📇 Flashcards (100 cartões)</h3>
           <div class="flashcard-container">
             <div class="flashcard" id="flashcard">
-              <div class="flashcard-front"><h3 id="frontWord">Carregando...</h3><p style="margin-top: 12px;"><i class="fas fa-sync-alt"></i> Clique para virar</p></div>
+              <div class="flashcard-front"><h3 id="frontWord">Carregando...</h3><p style="margin-top:12px;"><i class="fas fa-sync-alt"></i> Clique para virar</p></div>
               <div class="flashcard-back"><p id="backDef"></p></div>
             </div>
           </div>
@@ -741,7 +756,6 @@
 
 <a href="https://wa.me/258848776954?text=I%20WANT%20TO%20SPEAK%20ENGLISH" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
-<!-- Botão flutuante IA -->
 <div id="aiFloatingBtn" class="ai-help-btn" style="display:none;"><i class="fas fa-robot"></i></div>
 <div id="aiModal" class="ai-modal">
   <div class="ai-modal-header"><span>🤖 Assistente IA</span><div style="display:flex; gap:8px;"><label class="toggle-google"><input type="checkbox" id="googleToggle" checked> 🔍 Pesquisar</label><span class="clear-chat-btn" style="cursor:pointer; background:#64748B; padding:4px 10px; border-radius:20px;">Limpar</span><i class="fas fa-times" style="cursor:pointer;" id="closeAiModal"></i></div></div>
@@ -750,6 +764,11 @@
 </div>
 
 <script>
+  // ========== MENU HAMBÚRGUER ==========
+  const menuBtn = document.getElementById('mobileMenuBtn');
+  const menuPanel = document.getElementById('menuPanel');
+  menuBtn.addEventListener('click', () => menuPanel.classList.toggle('show'));
+
   // ========== TABS PRINCIPAIS ==========
   const tabs = document.querySelectorAll('.tab-btn');
   const contents = document.querySelectorAll('.tab-content');
@@ -759,18 +778,14 @@
     tabs.forEach(btn => btn.classList.remove('active'));
     document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
     if(tabId === 'alunos') checkAlunosSession();
+    menuPanel.classList.remove('show'); // fechar menu após clique
   }
   tabs.forEach(btn => btn.addEventListener('click', () => activateTab(btn.dataset.tab)));
-  document.getElementById('goToTestBtn')?.addEventListener('click', (e) => { e.preventDefault(); activateTab('test'); });
-  document.getElementById('goToTestFromPricing')?.addEventListener('click', (e) => { e.preventDefault(); activateTab('test'); });
-
-  // ========== MENU MOBILE ==========
-  const mobileBtn = document.getElementById('mobileMenuBtn');
-  const tabsContainer = document.getElementById('tabsContainer');
-  if(mobileBtn) mobileBtn.addEventListener('click', () => tabsContainer.classList.toggle('show'));
+  document.getElementById('goToTestBtn')?.addEventListener('click', (e) => { e.preventDefault(); activateTab('test'); menuPanel.classList.remove('show'); });
+  document.getElementById('goToTestFromPricing')?.addEventListener('click', (e) => { e.preventDefault(); activateTab('test'); menuPanel.classList.remove('show'); });
 
   // ========== ÁREA DO ALUNO ==========
-  const VALID_PASSWORDS = ["aluno1", "Intermediate2"];  // palavra-passe alterada
+  const VALID_PASSWORDS = ["aluno1", "Intermediate2"];
   let puzzleScore = 0, currentPuzzleIndex = 0, shuffledPuzzles = [], puzzleAnswered = false;
   const loginArea = document.getElementById('alunosLoginArea');
   const materiaisArea = document.getElementById('alunosMateriaisArea');
